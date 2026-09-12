@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: 2405fc54-41fd-4d4e-a3f2-65248336f202
+slug: ai-assisted-development
+name: AI-Assisted Development
+estimated_minutes: 270
+description: >-
+  Coding assistants are part of the job now. Learn to use them well — and to
+  keep understanding the code you ship.
+
+objectives:
+- uuid: eead3319-7600-4005-9aac-8e65925bcc63
+  order: 1
+  text: Use an agentic coding tool to carry a real task from start to finish.
+- uuid: ab36a3f4-332d-484f-93ae-1fd9d575339d
+  order: 2
+  text: Review AI-generated code closely enough to explain and defend every line before shipping it.
+- uuid: 8372f9b5-57e8-4070-b4eb-f1fa8d64a78a
+  order: 3
+  text: Judge where AI assistance pays off and where it costs more than it saves.
+- uuid: 50bcb388-c479-4eeb-ab40-17aa9fe1078b
+  order: 4
+  text: State your own working rules for using assistance without eroding your understanding.
+
+steps:
+- uuid: 6af533e6-614a-4399-a7ba-ad98c679c6a1
+  order: 1
+  action: read
+  title: Agentic Coding Tools
+  description: >-
+    What these tools are and how they differ from autocomplete — they read a
+    codebase, edit files, and run commands rather than suggesting lines.
+  variant_dimension: coding_tool
+  variants:
+  - key: claude-code
+    label: Claude Code
+    resources:
+    - label: Overview
+      url: https://code.claude.com/docs/en/overview
+  - key: codex
+    label: Codex
+    resources:
+    - label: Quickstart
+      url: https://developers.openai.com/codex/quickstart
+
+- uuid: dc7a204b-e0f8-4145-9048-fe8df965275e
+  order: 2
+  action: explore
+  title: An AI-Assisted Build, Start to Finish
+  description: >-
+    Work through a full guided build rather than a demo clip. The goal is to
+    see the whole loop — prompting, reviewing, correcting, verifying.
+  variant_dimension: coding_tool
+  variants:
+  - key: claude-code
+    label: Claude Code
+    resources:
+    - label: Claude Code in Action
+      url: https://anthropic.skilljar.com/claude-code-in-action
+      note: free official course
+    - label: freeCodeCamp — Claude Code for Beginners
+      url: https://www.youtube.com/watch?v=gh2_PhgZGsM
+      note: alternative, video
+  - key: codex
+    label: Codex
+    resources:
+    - label: Codex guides
+      url: https://developers.openai.com/codex/
+
+- uuid: 5a93f727-0e76-4093-90ed-516623d88224
+  order: 3
+  action: read
+  title: The Case For and Against AI-Assisted Coding
+  description: >-
+    A practitioner writing honestly about both sides over time — where these
+    tools genuinely help and where they quietly cost more than they save.
+  resources:
+  - label: Simon Willison — AI-assisted programming
+    url: https://simonwillison.net/tags/ai-assisted-programming/
+
+- uuid: e6e5807d-4fbb-4a09-9e39-3d8dc71ccae3
+  order: 4
+  action: practice
+  title: Build and Audit with an Assistant
+  description: >-
+    Build a small command-line tool with an assistant, then review every line
+    and write up three things: what it got right, what you would have done
+    differently, and what you did not understand at first. The write-up is the
+    point — it is where the learning happens.
+
+- uuid: dad64a8d-e955-4c36-919e-60bb0d60a013
+  order: 5
+  action: practice
+  title: Define Your AI Usage Rules
+  description: >-
+    Write your own rules for using assistance while learning: what you will
+    always write yourself, what you are happy to delegate, and how you will
+    check that you still understand what you shipped. Revisit these at the end
+    of the curriculum.

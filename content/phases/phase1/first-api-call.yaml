@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: e1ab09c7-9c53-4ba4-b56b-035f004a8d31
+slug: first-api-call
+name: Your First API Call
+estimated_minutes: 120
+description: >-
+  Get a working AI development environment and make your first authenticated
+  call. Every later topic in this phase — and every later phase — assumes this
+  toolchain exists.
+
+objectives:
+- uuid: 9968aba7-5356-4b46-827a-f4056b2917a6
+  order: 1
+  text: Set up an isolated Python project with dependencies managed and API keys kept out of version control.
+- uuid: e5c1ed6e-8679-44bc-86c6-1e50a4a04d08
+  order: 2
+  text: Make an authenticated call to a hosted model and read what comes back, including token usage.
+- uuid: e3100b6b-39c7-481b-a907-91075b83c276
+  order: 3
+  text: Handle the common API failures — bad key, wrong model name, rate limits — without crashing.
+
+steps:
+- uuid: beeebe38-52e0-489e-be76-700a139d3f0c
+  order: 1
+  action: practice
+  title: Set Up Your Environment
+  description: >-
+    Create a Python project with uv or venv, put your API key in a .env file,
+    and confirm .gitignore excludes it. Verify by attempting to stage
+    everything and checking the key is not included — a committed key is the
+    most common first mistake in this field.
+
+- uuid: 85303fd0-4751-4105-a31a-448946ee81bc
+  order: 2
+  action: read
+  title: Making Your First Request
+  description: >-
+    Read your provider's getting-started guide end to end before writing code.
+    Note the shape of the request and what the response object contains.
+  variant_dimension: provider
+  variants:
+  - key: anthropic
+    label: Anthropic
+    resources:
+    - label: Get started with Claude
+      url: https://platform.claude.com/docs/en/get-started
+  - key: openai
+    label: OpenAI
+    resources:
+    - label: Text generation
+      url: https://platform.openai.com/docs/guides/text
+
+- uuid: da10aad4-c6e3-426b-bf5b-28e6a94e4878
+  order: 3
+  action: practice
+  title: Send a Completion Request
+  description: >-
+    Send a prompt from Python and print three things: the response text, the
+    input and output token counts, and the cost you compute from them. Reading
+    usage off the response now makes the cost work later in the phase concrete.
+
+- uuid: 071a390a-6393-4f84-b151-571e607e72ad
+  order: 4
+  action: practice
+  title: Response Handling and Errors
+  description: >-
+    Trigger deliberate failures — an invalid key, a model name that does not
+    exist — and handle each one so your script reports the problem instead of
+    raising a stack trace. This is the difference between a snippet and a tool.

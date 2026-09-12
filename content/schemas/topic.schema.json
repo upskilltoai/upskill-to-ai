@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upskill-to-ai/schemas/topic.schema.json",
+  "title": "Topic",
+  "description": "A group of related steps within a phase.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "uuid",
+    "slug",
+    "name",
+    "description",
+    "estimated_minutes",
+    "objectives",
+    "steps"
+  ],
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "URL segment and filename."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Display name. Title Case noun phrase, no leading article."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estimated_minutes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Time for this topic's non-optional steps. Summed to give the phase total."
+    },
+    "is_capstone": {
+      "type": "boolean",
+      "default": false,
+      "description": "True for the final topic of every phase."
+    },
+    "objectives": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/objective" }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "$defs": {
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uuid", "order", "text"],
+      "properties": {
+        "uuid": { "type": "string", "format": "uuid" },
+        "order": { "type": "integer", "minimum": 1 },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A capability statement: what the learner can do afterwards."
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How the link is named in the UI."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "note": {
+          "type": "string",
+          "description": "Short qualifier, e.g. 'free official course' or 'alternative'."
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "resources"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Identifies the variant. Stable across content edits; used as the tab key."
+        },
+        "label": { "type": "string", "minLength": 1 },
+        "resources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/resource" }
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uuid", "order", "action", "title", "description"],
+      "properties": {
+        "uuid": { "type": "string", "format": "uuid" },
+        "order": { "type": "integer", "minimum": 1 },
+        "action": {
+          "type": "string",
+          "enum": ["watch", "read", "practice", "explore"],
+          "description": "Rendered as a badge. The title should read naturally after it."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short noun phrase, not an imperative sentence."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What to do and what to take away. Instructions belong here, not in the title."
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Actual runtime of a timed resource, e.g. a video. A measured fact, unlike the topic-level estimate."
+        },
+        "optional": {
+          "type": "boolean",
+          "default": false,
+          "description": "Display tag only. Every step stays checkable; the real gate is the capstone."
+        },
+        "resources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/resource" },
+          "description": "Shown to every learner. Omit for pure exercises."
+        },
+        "variant_dimension": {
+          "type": "string",
+          "enum": ["provider", "coding_tool"],
+          "description": "The axis these variants differ along. Groups them and labels the tab set; no preference is stored."
+        },
+        "variants": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/variant" },
+          "description": "Equivalent alternatives teaching the same concept, one of which is enough. All render as tabs, first selected by default. Title and description are shared."
+        }
+      },
+      "dependentRequired": {
+        "variants": ["variant_dimension"],
+        "variant_dimension": ["variants"]
+      }
+    }
+  }
+}

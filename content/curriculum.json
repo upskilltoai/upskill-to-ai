@@ -1,0 +1,987 @@
+{
+  "version": 1,
+  "generated_at": "2026-09-12T20:19:39+00:00",
+  "phases": [
+    {
+      "uuid": "605911ce-e296-43a3-ae04-0e97a75dbd19",
+      "slug": "phase1",
+      "name": "AI and LLM Foundations",
+      "order": 1,
+      "short_description": "Build the mental model, vocabulary, and cost intuition behind large language models, then prove it by running one prompt against a hosted model and a local one and publishing the comparison.",
+      "description": "Phase 1 establishes everything the rest of the curriculum assumes. You will learn what a large language model actually does when it generates text, get a working development environment and make your first authenticated API call, build the vocabulary of tokens and context windows, learn to judge models rather than trust leaderboards, and develop real intuition for what an LLM feature costs in tokens, latency, and money. The phase closes by running the same prompt against a hosted model and a local one, measuring both, and publishing what you found.",
+      "topics": [
+        {
+          "uuid": "d5dbcddd-a098-46d3-928a-4091a443e41b",
+          "slug": "how-llms-work",
+          "name": "How LLMs Work",
+          "estimated_minutes": 185,
+          "description": "What a large language model actually does when it produces text — from next-token prediction to the transformer architecture and the training pipeline that turns raw prediction into a helpful assistant.",
+          "objectives": [
+            {
+              "uuid": "004ef954-0ace-4d2a-9943-0b0d84ee9bf8",
+              "order": 1,
+              "text": "Explain next-token prediction, and why a model's output is generated rather than retrieved."
+            },
+            {
+              "uuid": "902f5c54-85ad-4e4b-8705-46f9e03d28ff",
+              "order": 2,
+              "text": "Describe how a transformer turns a sequence of tokens into a prediction, and what attention contributes."
+            },
+            {
+              "uuid": "2d460b4c-24d3-4f66-870e-794c6431cf6f",
+              "order": 3,
+              "text": "Outline the training pipeline — pretraining, instruction tuning, RLHF — and what each stage changes about model behaviour."
+            },
+            {
+              "uuid": "77c2fb35-2f4d-4e23-8915-37c8745f574a",
+              "order": 4,
+              "text": "Explain an LLM to a non-technical audience without reaching for metaphors that mislead."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "d61aedfe-0923-404c-9a3d-dffdc940e1d9",
+              "order": 1,
+              "action": "watch",
+              "title": "What Is a Large Language Model?",
+              "description": "The shortest honest answer to the question. Start here for the shape of the idea before spending an hour on the details.",
+              "duration_minutes": 8,
+              "resources": [
+                {
+                  "label": "3Blue1Brown — Large Language Models explained briefly",
+                  "url": "https://www.youtube.com/watch?v=LPZh9BOjkQs"
+                }
+              ]
+            },
+            {
+              "uuid": "2ed9294c-286f-4195-b317-7bfc810a59ed",
+              "order": 2,
+              "action": "watch",
+              "title": "How LLMs Are Built and Used",
+              "description": "The complete mental model in one sitting, covering pretraining and fine-tuning at a high level along with where the technology is heading.",
+              "duration_minutes": 60,
+              "resources": [
+                {
+                  "label": "Andrej Karpathy — Intro to Large Language Models",
+                  "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g"
+                }
+              ]
+            },
+            {
+              "uuid": "0f8d23b6-e789-48b1-bdee-150884b3ef24",
+              "order": 3,
+              "action": "watch",
+              "title": "Transformers and Next-Token Prediction",
+              "description": "What actually happens to your text inside the model. Focus on the predict-sample-repeat loop and why generation is probabilistic.",
+              "duration_minutes": 27,
+              "resources": [
+                {
+                  "label": "3Blue1Brown — Transformers, the tech behind LLMs (Chapter 5)",
+                  "url": "https://www.youtube.com/watch?v=wjZofJX0v4M"
+                }
+              ]
+            },
+            {
+              "uuid": "14f476dd-4069-483e-bb5c-780be2314dd0",
+              "order": 4,
+              "action": "watch",
+              "title": "The Attention Mechanism",
+              "description": "Attention is the piece that lets a model decide which earlier words matter for the next one. This is the single most useful mechanism to understand.",
+              "duration_minutes": 26,
+              "resources": [
+                {
+                  "label": "3Blue1Brown — Attention in transformers, step-by-step (Chapter 6)",
+                  "url": "https://www.youtube.com/watch?v=eMlx5fFNoYc"
+                }
+              ]
+            },
+            {
+              "uuid": "6d3a703f-d7bc-47b6-a33e-7190535ab091",
+              "order": 5,
+              "action": "read",
+              "title": "Transformer Architecture in Detail",
+              "description": "The same architecture in prose and diagrams. Reading it after the videos fills in the parts that move too quickly on screen.",
+              "resources": [
+                {
+                  "label": "Jay Alammar — The Illustrated Transformer",
+                  "url": "https://jalammar.github.io/illustrated-transformer/"
+                }
+              ]
+            },
+            {
+              "uuid": "5c5c320a-6ae6-4d0b-a3d1-b87e2665fabb",
+              "order": 6,
+              "action": "read",
+              "title": "Reinforcement Learning from Human Feedback",
+              "description": "How a raw next-token predictor becomes something that follows instructions. This completes the pipeline picture started in step 2.",
+              "resources": [
+                {
+                  "label": "Hugging Face — Illustrating Reinforcement Learning from Human Feedback",
+                  "url": "https://huggingface.co/blog/rlhf"
+                }
+              ]
+            },
+            {
+              "uuid": "26ed4c9b-f443-4c9b-88a4-db409014ce6c",
+              "order": 7,
+              "action": "practice",
+              "title": "Explain an LLM in Your Own Words",
+              "description": "Write a one-page explainer aimed at a non-technical reader and commit it to your repository. If you cannot explain it without a misleading metaphor, you have found the part you do not yet understand."
+            },
+            {
+              "uuid": "a8724ea4-e617-47c5-bdbc-113f0fe06837",
+              "order": 8,
+              "action": "watch",
+              "title": "The Full Training Stack",
+              "description": "The complete training pipeline in depth — pretraining data, tokenization, supervised fine-tuning, RLHF, hallucination, and tool use.",
+              "duration_minutes": 211,
+              "optional": true,
+              "resources": [
+                {
+                  "label": "Andrej Karpathy — Deep Dive into LLMs like ChatGPT",
+                  "url": "https://www.youtube.com/watch?v=7xTGNNLPyMI"
+                }
+              ]
+            },
+            {
+              "uuid": "baa08e59-e26e-4053-bf8d-74b8a7fd20f4",
+              "order": 9,
+              "action": "watch",
+              "title": "Where Facts Live Inside a Model",
+              "description": "How factual knowledge might be stored in a network's weights. Useful background for reasoning about hallucination later in the curriculum.",
+              "duration_minutes": 22,
+              "optional": true,
+              "resources": [
+                {
+                  "label": "3Blue1Brown — How might LLMs store facts (Chapter 7)",
+                  "url": "https://www.youtube.com/watch?v=9-Jl0dxWQs8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "uuid": "e1ab09c7-9c53-4ba4-b56b-035f004a8d31",
+          "slug": "first-api-call",
+          "name": "Your First API Call",
+          "estimated_minutes": 120,
+          "description": "Get a working AI development environment and make your first authenticated call. Every later topic in this phase — and every later phase — assumes this toolchain exists.",
+          "objectives": [
+            {
+              "uuid": "9968aba7-5356-4b46-827a-f4056b2917a6",
+              "order": 1,
+              "text": "Set up an isolated Python project with dependencies managed and API keys kept out of version control."
+            },
+            {
+              "uuid": "e5c1ed6e-8679-44bc-86c6-1e50a4a04d08",
+              "order": 2,
+              "text": "Make an authenticated call to a hosted model and read what comes back, including token usage."
+            },
+            {
+              "uuid": "e3100b6b-39c7-481b-a907-91075b83c276",
+              "order": 3,
+              "text": "Handle the common API failures — bad key, wrong model name, rate limits — without crashing."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "beeebe38-52e0-489e-be76-700a139d3f0c",
+              "order": 1,
+              "action": "practice",
+              "title": "Set Up Your Environment",
+              "description": "Create a Python project with uv or venv, put your API key in a .env file, and confirm .gitignore excludes it. Verify by attempting to stage everything and checking the key is not included — a committed key is the most common first mistake in this field."
+            },
+            {
+              "uuid": "85303fd0-4751-4105-a31a-448946ee81bc",
+              "order": 2,
+              "action": "read",
+              "title": "Making Your First Request",
+              "description": "Read your provider's getting-started guide end to end before writing code. Note the shape of the request and what the response object contains.",
+              "variant_dimension": "provider",
+              "variants": [
+                {
+                  "key": "anthropic",
+                  "label": "Anthropic",
+                  "resources": [
+                    {
+                      "label": "Get started with Claude",
+                      "url": "https://platform.claude.com/docs/en/get-started"
+                    }
+                  ]
+                },
+                {
+                  "key": "openai",
+                  "label": "OpenAI",
+                  "resources": [
+                    {
+                      "label": "Text generation",
+                      "url": "https://platform.openai.com/docs/guides/text"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "da10aad4-c6e3-426b-bf5b-28e6a94e4878",
+              "order": 3,
+              "action": "practice",
+              "title": "Send a Completion Request",
+              "description": "Send a prompt from Python and print three things: the response text, the input and output token counts, and the cost you compute from them. Reading usage off the response now makes the cost work later in the phase concrete."
+            },
+            {
+              "uuid": "071a390a-6393-4f84-b151-571e607e72ad",
+              "order": 4,
+              "action": "practice",
+              "title": "Response Handling and Errors",
+              "description": "Trigger deliberate failures — an invalid key, a model name that does not exist — and handle each one so your script reports the problem instead of raising a stack trace. This is the difference between a snippet and a tool."
+            }
+          ]
+        },
+        {
+          "uuid": "4e0dd97e-48d9-4dd6-9404-1c4145a30d2b",
+          "slug": "tokens-and-context",
+          "name": "Tokens and Context",
+          "estimated_minutes": 140,
+          "description": "How text becomes tokens, what a context window actually holds, and what both mean for what you pay.",
+          "objectives": [
+            {
+              "uuid": "9ce478d9-41b5-4760-b888-1215f49eb268",
+              "order": 1,
+              "text": "Explain why models process tokens rather than words, and anticipate where tokenization behaves unintuitively — non-English text, code, numbers."
+            },
+            {
+              "uuid": "a3b1e40f-fa12-44a5-a2b8-d36f18ab4068",
+              "order": 2,
+              "text": "Determine what a given model's context window holds, and what competes for that space."
+            },
+            {
+              "uuid": "3095d929-6308-4403-ac1c-d69a931b4694",
+              "order": 3,
+              "text": "Count the tokens in a prompt programmatically and calculate what running it at scale would cost."
+            },
+            {
+              "uuid": "bfa44908-0fbc-4eba-99e2-77f01e3b8a73",
+              "order": 4,
+              "text": "Recognise what an embedding is, well enough to build on it in Phase 4."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "dcb7297a-8c97-46f7-bdb3-93477ca44c0a",
+              "order": 1,
+              "action": "read",
+              "title": "Tokens and Tokenization",
+              "description": "Read the Tokens entry, and the surrounding vocabulary while you are there. The page states up front that these concepts are not specific to any one provider, so it serves whichever you chose.",
+              "resources": [
+                {
+                  "label": "Anthropic — Glossary",
+                  "url": "https://platform.claude.com/docs/en/about-claude/glossary"
+                }
+              ]
+            },
+            {
+              "uuid": "acc2eb3b-985b-4b4c-bd76-06d0c9320957",
+              "order": 2,
+              "action": "practice",
+              "title": "Tokenization in Practice",
+              "description": "Tokenize English, a non-English language, source code, emoji, and long numbers. Compare the counts across models and note where they explode — that gap is a real cost difference you will pay for in production.",
+              "resources": [
+                {
+                  "label": "Tiktokenizer",
+                  "url": "https://tiktokenizer.vercel.app/"
+                }
+              ]
+            },
+            {
+              "uuid": "4d3a98dc-5923-4f16-b5bd-d182dcff65b1",
+              "order": 3,
+              "action": "read",
+              "title": "Context Windows",
+              "description": "What the window holds, and what competes for the space — system prompt, history, retrieved documents, tool definitions, and the response itself.",
+              "variant_dimension": "provider",
+              "variants": [
+                {
+                  "key": "anthropic",
+                  "label": "Anthropic",
+                  "resources": [
+                    {
+                      "label": "Context windows",
+                      "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+                    }
+                  ]
+                },
+                {
+                  "key": "openai",
+                  "label": "OpenAI",
+                  "resources": [
+                    {
+                      "label": "Models",
+                      "url": "https://platform.openai.com/docs/models"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "a2643422-af5f-4da8-bb80-3166e813c0ad",
+              "order": 4,
+              "action": "practice",
+              "title": "Counting Tokens and Estimating Cost",
+              "description": "Count the tokens in a real prompt programmatically, then compute what 1,000 calls would cost. Compare your estimate against the usage figures your own script reported in the previous topic.",
+              "variant_dimension": "provider",
+              "variants": [
+                {
+                  "key": "anthropic",
+                  "label": "Anthropic",
+                  "resources": [
+                    {
+                      "label": "Token counting",
+                      "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting"
+                    }
+                  ]
+                },
+                {
+                  "key": "openai",
+                  "label": "OpenAI",
+                  "resources": [
+                    {
+                      "label": "tiktoken",
+                      "url": "https://github.com/openai/tiktoken"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "265ec9a5-343c-4aff-8a50-945bcfbbc8a0",
+              "order": 5,
+              "action": "explore",
+              "title": "Embeddings — A First Look",
+              "description": "A long-form primer. Read the opening sections for the intuition only — what an embedding represents and why related meanings land near each other. Phase 4 covers embeddings properly.",
+              "resources": [
+                {
+                  "label": "Vicki Boykis — What are embeddings",
+                  "url": "https://vickiboykis.com/what_are_embeddings/"
+                }
+              ]
+            },
+            {
+              "uuid": "31f185a2-785a-479f-acc3-dfe21927ebc2",
+              "order": 6,
+              "action": "explore",
+              "title": "Build a Tokenizer from Scratch",
+              "description": "Implement byte pair encoding yourself. Long, and worth it if you want the strange behaviours of LLMs to stop being surprising.",
+              "duration_minutes": 133,
+              "optional": true,
+              "resources": [
+                {
+                  "label": "Andrej Karpathy — Let's build the GPT Tokenizer",
+                  "url": "https://www.youtube.com/watch?v=zduSFxRajkE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "uuid": "7b0384ca-60a3-442b-a373-f4412efc0965",
+          "slug": "adaptation-strategies",
+          "name": "Adaptation Strategies",
+          "estimated_minutes": 150,
+          "description": "The practical ways to make a model do what you need — prompting, retrieval, and fine-tuning — and how to tell which one a problem calls for. Training a model from scratch is a fourth option and almost never the right one.",
+          "objectives": [
+            {
+              "uuid": "470b8360-67e1-4493-a5cd-11e572a3ef26",
+              "order": 1,
+              "text": "Compare prompting, retrieval, and fine-tuning on cost, latency, data requirements, and maintenance burden."
+            },
+            {
+              "uuid": "fbb40a0a-0002-4d0d-8cd1-2ff051b0920c",
+              "order": 2,
+              "text": "Select an adaptation strategy for a given problem and defend the choice."
+            },
+            {
+              "uuid": "acd47bd1-ee12-4f4c-80d7-b2be9cffc271",
+              "order": 3,
+              "text": "Recognise the narrow cases where fine-tuning is genuinely warranted — and the far more common ones where it is not."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "4a0499ae-1f87-401b-bfa2-c006f886f91f",
+              "order": 1,
+              "action": "watch",
+              "title": "Prompting, RAG, and Fine-Tuning Compared",
+              "description": "A short overview of the three approaches and what each is good for. Watch this first for the shape, then read the decision framework that follows.",
+              "duration_minutes": 13,
+              "resources": [
+                {
+                  "label": "IBM Technology — RAG vs Fine-Tuning vs Prompt Engineering",
+                  "url": "https://www.youtube.com/watch?v=zYGDpG-pTho"
+                }
+              ]
+            },
+            {
+              "uuid": "0520d0e3-fe97-4794-b338-75b734d31f81",
+              "order": 2,
+              "action": "read",
+              "title": "Choosing an Adaptation Strategy",
+              "description": "The overview turned into a decision framework. Written by one provider, but the reasoning applies regardless of which you use.",
+              "resources": [
+                {
+                  "label": "OpenAI — Optimizing LLM accuracy",
+                  "url": "https://platform.openai.com/docs/guides/optimizing-llm-accuracy"
+                }
+              ]
+            },
+            {
+              "uuid": "cbc04581-1225-4a44-bb0d-ee36d2301d27",
+              "order": 3,
+              "action": "read",
+              "title": "When Fine-Tuning Is Worth It",
+              "description": "The framework applied to the option people over-reach for. Note what fine-tuning does not fix — it teaches form and style, not facts.",
+              "resources": [
+                {
+                  "label": "OpenAI — Fine-tuning",
+                  "url": "https://platform.openai.com/docs/guides/fine-tuning",
+                  "note": "Not provider-specific — the Claude API does not currently offer fine-tuning"
+                }
+              ]
+            },
+            {
+              "uuid": "43f41fe5-803a-4baa-8b18-d181bfe9d5b5",
+              "order": 4,
+              "action": "explore",
+              "title": "AI Engineering, Chapter 1",
+              "description": "A practitioner's framing of the whole discipline and how building with foundation models differs from traditional machine learning.",
+              "resources": [
+                {
+                  "label": "Chip Huyen — AI Engineering",
+                  "url": "https://www.oreilly.com/library/view/ai-engineering/9781098166298/"
+                }
+              ]
+            },
+            {
+              "uuid": "60624c40-aff8-4a54-9780-7ebd594cabba",
+              "order": 5,
+              "action": "practice",
+              "title": "Choose the Right Approach",
+              "description": "For five scenarios — internal documentation Q&A, brand-voice copywriting, medical terminology, real-time stock answers, and enforcing a house code style — pick an approach and justify each choice in two sentences. Commit your answers; you will revisit them after Phase 4."
+            }
+          ]
+        },
+        {
+          "uuid": "09d41254-02bf-4bc6-9e88-9ce47d640d34",
+          "slug": "model-landscape",
+          "name": "Model Landscape",
+          "estimated_minutes": 210,
+          "description": "Who makes the models, how they differ, and how to evaluate a claim about one — including why leaderboard position is a weak signal for your use case.",
+          "objectives": [
+            {
+              "uuid": "f44e10eb-698c-4def-b308-3d072481f335",
+              "order": 1,
+              "text": "Navigate the current landscape of proprietary and open-weight model families."
+            },
+            {
+              "uuid": "da70d2b8-188d-4dcf-a96d-c74b871cfa43",
+              "order": 2,
+              "text": "Read a model card and extract what matters for a build decision — context window, license, intended use, known limitations."
+            },
+            {
+              "uuid": "097e0f05-e874-4379-a804-47eb9daf0f38",
+              "order": 3,
+              "text": "Explain why \"open weights\" is not \"open source\", and what a given model's license actually permits."
+            },
+            {
+              "uuid": "4c7aea3f-67c6-4092-a608-e614ede98d8c",
+              "order": 4,
+              "text": "Read a model's parameter count and quantization label to judge whether it will run on given hardware."
+            },
+            {
+              "uuid": "d0bf0bcf-6451-45e5-8fbf-ad4d12133102",
+              "order": 5,
+              "text": "Explain how benchmark results mislead — contamination, leaderboard overfitting, and the gap from your own use case."
+            },
+            {
+              "uuid": "439880a3-fea4-4d62-b0e8-a3ab50908be4",
+              "order": 6,
+              "text": "Assemble your own model comparison for a specific use case instead of deferring to a ranking."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "dfccb042-dd77-477c-8458-d84ee0ef1e4c",
+              "order": 1,
+              "action": "read",
+              "title": "Frontier Model Providers",
+              "description": "Compare the model line-ups side by side. Read both regardless of which provider you chose — knowing the landscape is the point of this step.",
+              "resources": [
+                {
+                  "label": "Anthropic — Models overview",
+                  "url": "https://platform.claude.com/docs/en/models/overview"
+                },
+                {
+                  "label": "OpenAI — Models",
+                  "url": "https://platform.openai.com/docs/models"
+                }
+              ]
+            },
+            {
+              "uuid": "5f13c68a-f4ca-4686-8bee-2cdf3d3e95ac",
+              "order": 2,
+              "action": "read",
+              "title": "Reading a Model Card",
+              "description": "What a model card is meant to contain, and which fields actually change a build decision.",
+              "resources": [
+                {
+                  "label": "Hugging Face — Model cards",
+                  "url": "https://huggingface.co/docs/hub/model-cards"
+                }
+              ]
+            },
+            {
+              "uuid": "53b5f3e8-6704-4f8f-bcc4-406b45cc8b08",
+              "order": 3,
+              "action": "practice",
+              "title": "Open-Weight Models",
+              "description": "Read one real model card end to end and write down its license, context window, and intended use. Pick either model below.",
+              "resources": [
+                {
+                  "label": "Qwen3-8B",
+                  "url": "https://huggingface.co/Qwen/Qwen3-8B"
+                },
+                {
+                  "label": "Mistral-7B-Instruct",
+                  "url": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3"
+                }
+              ]
+            },
+            {
+              "uuid": "99813079-3cb5-4f5e-918c-e48c63adbd71",
+              "order": 4,
+              "action": "read",
+              "title": "Open Weights vs Open Source",
+              "description": "Why most models described as \"open\" are not open source, and what the distinction means for what you are permitted to build.",
+              "resources": [
+                {
+                  "label": "Open Source Initiative — The Open Source AI Definition",
+                  "url": "https://opensource.org/ai/open-source-ai-definition"
+                }
+              ]
+            },
+            {
+              "uuid": "bd502b53-0482-4545-9c03-a24928303afc",
+              "order": 5,
+              "action": "practice",
+              "title": "Model Sizes and Parameters",
+              "description": "Browse the model library and compare parameter counts, quantization tags, and download sizes across one family. Then read why those tags exist. Choose the model you will run locally in this phase's capstone.",
+              "resources": [
+                {
+                  "label": "Ollama model library",
+                  "url": "https://ollama.com/library"
+                },
+                {
+                  "label": "Hugging Face — Quantization",
+                  "url": "https://huggingface.co/docs/transformers/main/en/quantization/overview"
+                }
+              ]
+            },
+            {
+              "uuid": "805b75c4-dfe5-4da1-b381-f48fe05db175",
+              "order": 6,
+              "action": "explore",
+              "title": "Model Leaderboards and Rankings",
+              "description": "Explore two ranking sources and note where they disagree. Disagreement between credible rankings is the clearest evidence that a single number cannot answer \"which model should I use\".",
+              "resources": [
+                {
+                  "label": "LMArena",
+                  "url": "https://lmarena.ai/"
+                },
+                {
+                  "label": "Artificial Analysis",
+                  "url": "https://artificialanalysis.ai/"
+                }
+              ]
+            },
+            {
+              "uuid": "2b698e84-7b72-4980-ac4d-dd2eecdb15b9",
+              "order": 7,
+              "action": "read",
+              "title": "Why Benchmarks Mislead",
+              "description": "Read the Automatic benchmarks sections — Basics, then Tips and tricks — for how contamination and leaderboard overfitting inflate scores.",
+              "resources": [
+                {
+                  "label": "Hugging Face — LLM Evaluation Guidebook",
+                  "url": "https://huggingface.co/spaces/OpenEvals/evaluation-guidebook"
+                }
+              ]
+            },
+            {
+              "uuid": "a0a705e8-c928-459b-a119-5583475cac83",
+              "order": 8,
+              "action": "read",
+              "title": "Keeping Pace with the Field",
+              "description": "Read the most recent annual retrospective. The goal is calibration: what changed in a year, and how much of what you just learned has a shelf life.",
+              "resources": [
+                {
+                  "label": "Simon Willison",
+                  "url": "https://simonwillison.net/"
+                }
+              ]
+            },
+            {
+              "uuid": "9f3f1e53-2e7e-4d4b-8c39-9d400ddf9197",
+              "order": 9,
+              "action": "practice",
+              "title": "Build a Model Comparison Matrix",
+              "description": "Build a spreadsheet of six models against context window, input and output price, modalities, license, and hosted or local. Then pick one for a use case you care about and write down why."
+            }
+          ]
+        },
+        {
+          "uuid": "eb6f3522-e1d1-4f18-b391-15ed86a32279",
+          "slug": "inference-and-cost",
+          "name": "Inference and Cost",
+          "estimated_minutes": 195,
+          "description": "How sampling settings shape output, why the same prompt gives different answers, and what an LLM feature actually costs in tokens, latency, and money.",
+          "objectives": [
+            {
+              "uuid": "4505e237-86c8-40cc-b011-801632632a68",
+              "order": 1,
+              "text": "Explain how temperature and top-p shape output, and why identical prompts produce different results."
+            },
+            {
+              "uuid": "14f40533-bed1-482f-8e1c-8bf6b0d1f196",
+              "order": 2,
+              "text": "Read a provider's pricing page and explain why input, output, and cached tokens are priced differently."
+            },
+            {
+              "uuid": "6512006a-6265-4133-9318-da5dbf8661e0",
+              "order": 3,
+              "text": "Measure time-to-first-token and total latency, and explain which one users actually feel."
+            },
+            {
+              "uuid": "f04d0fef-8f13-4c1e-9767-79142d23c2b4",
+              "order": 4,
+              "text": "Account for reasoning tokens when estimating what a feature will cost."
+            },
+            {
+              "uuid": "b728fe2c-0fac-4023-8d5f-e59c06dd4afb",
+              "order": 5,
+              "text": "Produce a defensible monthly cost estimate for an LLM feature at a stated usage level."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "5669df83-9d28-4053-a425-df8e45cbe6a0",
+              "order": 1,
+              "action": "read",
+              "title": "Sampling Parameters",
+              "description": "Start with the concept — what temperature does, and why temperature 0 is still not fully deterministic. Then read the API reference for the actual parameter names, ranges, and defaults you will pass in code.",
+              "resources": [
+                {
+                  "label": "Anthropic — Glossary, Temperature entry",
+                  "url": "https://platform.claude.com/docs/en/about-claude/glossary",
+                  "note": "concept"
+                },
+                {
+                  "label": "OpenAI — Responses API reference",
+                  "url": "https://platform.openai.com/docs/api-reference/responses/create",
+                  "note": "parameter reference"
+                }
+              ]
+            },
+            {
+              "uuid": "92e364f7-a85d-48f0-8ee2-ca1fc39b83f6",
+              "order": 2,
+              "action": "practice",
+              "title": "Temperature in Practice",
+              "description": "Run one prompt five times at temperature 0 and five times at 1. Record the variance you observe, then write down why temperature 0 still did not give you five identical answers."
+            },
+            {
+              "uuid": "9f7dfa0e-0f43-45b1-a4b6-e3a6ef7725aa",
+              "order": 3,
+              "action": "read",
+              "title": "Token Pricing Models",
+              "description": "Read your provider's pricing page and note the three different rates: input, output, and cached input. Output is typically several times the price of input, which shapes how you design prompts.",
+              "variant_dimension": "provider",
+              "variants": [
+                {
+                  "key": "anthropic",
+                  "label": "Anthropic",
+                  "resources": [
+                    {
+                      "label": "Pricing",
+                      "url": "https://platform.claude.com/docs/en/about-claude/pricing"
+                    }
+                  ]
+                },
+                {
+                  "key": "openai",
+                  "label": "OpenAI",
+                  "resources": [
+                    {
+                      "label": "Pricing",
+                      "url": "https://platform.openai.com/docs/pricing"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "0b1d728f-6b8a-4fa0-9cbb-725d1099a79e",
+              "order": 4,
+              "action": "read",
+              "title": "Latency and Time to First Token",
+              "description": "Time-to-first-token, time-per-output-token, and end-to-end latency measure different things. Pay attention to why TTFT dominates what a user perceives as speed, then skim the methodology page for how these are measured in published comparisons.",
+              "resources": [
+                {
+                  "label": "ClickHouse — LLM inference latency: TTFT, tokens per second, and what to measure",
+                  "url": "https://clickhouse.com/resources/engineering/llm-inference-latency"
+                },
+                {
+                  "label": "Artificial Analysis — Methodology",
+                  "url": "https://artificialanalysis.ai/methodology"
+                }
+              ]
+            },
+            {
+              "uuid": "fd999d6d-d6cf-4f10-898e-cd347c0f270b",
+              "order": 5,
+              "action": "read",
+              "title": "Reasoning Tokens and Their Cost",
+              "description": "Reasoning models generate tokens you never see but do pay for. Understand how thinking is controlled and how it is billed before you estimate costs.",
+              "variant_dimension": "provider",
+              "variants": [
+                {
+                  "key": "anthropic",
+                  "label": "Anthropic",
+                  "resources": [
+                    {
+                      "label": "Steering thinking",
+                      "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost"
+                    }
+                  ]
+                },
+                {
+                  "key": "openai",
+                  "label": "OpenAI",
+                  "resources": [
+                    {
+                      "label": "Reasoning",
+                      "url": "https://platform.openai.com/docs/guides/reasoning"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "bd49c84f-834d-4dd4-8c96-3411a2de07c9",
+              "order": 6,
+              "action": "practice",
+              "title": "Measuring Latency Across Models",
+              "description": "Write a script that measures time-to-first-token and total latency for the same prompt across two or three models, and tabulate the results. Streaming is what makes TTFT observable, so stream the responses."
+            },
+            {
+              "uuid": "03cf0dc1-63dd-4920-901b-97f92483dd54",
+              "order": 7,
+              "action": "practice",
+              "title": "Estimate Production Costs",
+              "description": "Project the monthly cost of a feature serving 1,000 daily users at five messages each. State your assumptions about prompt and response length, justify the model you chose, and note what would change the answer most."
+            }
+          ]
+        },
+        {
+          "uuid": "2405fc54-41fd-4d4e-a3f2-65248336f202",
+          "slug": "ai-assisted-development",
+          "name": "AI-Assisted Development",
+          "estimated_minutes": 270,
+          "description": "Coding assistants are part of the job now. Learn to use them well — and to keep understanding the code you ship.",
+          "objectives": [
+            {
+              "uuid": "eead3319-7600-4005-9aac-8e65925bcc63",
+              "order": 1,
+              "text": "Use an agentic coding tool to carry a real task from start to finish."
+            },
+            {
+              "uuid": "ab36a3f4-332d-484f-93ae-1fd9d575339d",
+              "order": 2,
+              "text": "Review AI-generated code closely enough to explain and defend every line before shipping it."
+            },
+            {
+              "uuid": "8372f9b5-57e8-4070-b4eb-f1fa8d64a78a",
+              "order": 3,
+              "text": "Judge where AI assistance pays off and where it costs more than it saves."
+            },
+            {
+              "uuid": "50bcb388-c479-4eeb-ab40-17aa9fe1078b",
+              "order": 4,
+              "text": "State your own working rules for using assistance without eroding your understanding."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "6af533e6-614a-4399-a7ba-ad98c679c6a1",
+              "order": 1,
+              "action": "read",
+              "title": "Agentic Coding Tools",
+              "description": "What these tools are and how they differ from autocomplete — they read a codebase, edit files, and run commands rather than suggesting lines.",
+              "variant_dimension": "coding_tool",
+              "variants": [
+                {
+                  "key": "claude-code",
+                  "label": "Claude Code",
+                  "resources": [
+                    {
+                      "label": "Overview",
+                      "url": "https://code.claude.com/docs/en/overview"
+                    }
+                  ]
+                },
+                {
+                  "key": "codex",
+                  "label": "Codex",
+                  "resources": [
+                    {
+                      "label": "Quickstart",
+                      "url": "https://developers.openai.com/codex/quickstart"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "dc7a204b-e0f8-4145-9048-fe8df965275e",
+              "order": 2,
+              "action": "explore",
+              "title": "An AI-Assisted Build, Start to Finish",
+              "description": "Work through a full guided build rather than a demo clip. The goal is to see the whole loop — prompting, reviewing, correcting, verifying.",
+              "variant_dimension": "coding_tool",
+              "variants": [
+                {
+                  "key": "claude-code",
+                  "label": "Claude Code",
+                  "resources": [
+                    {
+                      "label": "Claude Code in Action",
+                      "url": "https://anthropic.skilljar.com/claude-code-in-action",
+                      "note": "free official course"
+                    },
+                    {
+                      "label": "freeCodeCamp — Claude Code for Beginners",
+                      "url": "https://www.youtube.com/watch?v=gh2_PhgZGsM",
+                      "note": "alternative, video"
+                    }
+                  ]
+                },
+                {
+                  "key": "codex",
+                  "label": "Codex",
+                  "resources": [
+                    {
+                      "label": "Codex guides",
+                      "url": "https://developers.openai.com/codex/"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uuid": "5a93f727-0e76-4093-90ed-516623d88224",
+              "order": 3,
+              "action": "read",
+              "title": "The Case For and Against AI-Assisted Coding",
+              "description": "A practitioner writing honestly about both sides over time — where these tools genuinely help and where they quietly cost more than they save.",
+              "resources": [
+                {
+                  "label": "Simon Willison — AI-assisted programming",
+                  "url": "https://simonwillison.net/tags/ai-assisted-programming/"
+                }
+              ]
+            },
+            {
+              "uuid": "e6e5807d-4fbb-4a09-9e39-3d8dc71ccae3",
+              "order": 4,
+              "action": "practice",
+              "title": "Build and Audit with an Assistant",
+              "description": "Build a small command-line tool with an assistant, then review every line and write up three things: what it got right, what you would have done differently, and what you did not understand at first. The write-up is the point — it is where the learning happens."
+            },
+            {
+              "uuid": "dad64a8d-e955-4c36-919e-60bb0d60a013",
+              "order": 5,
+              "action": "practice",
+              "title": "Define Your AI Usage Rules",
+              "description": "Write your own rules for using assistance while learning: what you will always write yourself, what you are happy to delegate, and how you will check that you still understand what you shipped. Revisit these at the end of the curriculum."
+            }
+          ]
+        },
+        {
+          "uuid": "935c003a-e9f4-4c24-b34f-9f10788e73d8",
+          "slug": "first-contact-lab",
+          "name": "First Contact Lab",
+          "estimated_minutes": 240,
+          "is_capstone": true,
+          "description": "The Phase 1 capstone. Run the same prompt against a hosted model and a local one, measure both, and publish the comparison. Everything in this phase exists to make this possible.",
+          "objectives": [
+            {
+              "uuid": "716dadd7-29aa-4285-8974-30cba2496b38",
+              "order": 1,
+              "text": "Run an open-weight model locally and send it the same prompt you send a hosted model."
+            },
+            {
+              "uuid": "7cafc49d-e527-44c3-8410-81509c7e7fd9",
+              "order": 2,
+              "text": "Instrument LLM calls so token usage, latency, and cost are observable rather than guessed at."
+            },
+            {
+              "uuid": "f31a72b4-a2c5-4a5e-ac57-39d32b2e9663",
+              "order": 3,
+              "text": "Compare a hosted and a local model on quality, latency, and cost, with your own measurements as evidence."
+            },
+            {
+              "uuid": "bde78f21-d8ef-40b5-8dce-bd8291cf1a34",
+              "order": 4,
+              "text": "Publish a technical write-up that a stranger could act on."
+            }
+          ],
+          "steps": [
+            {
+              "uuid": "3664c925-fe9e-40ad-9da5-f97063a50396",
+              "order": 1,
+              "action": "practice",
+              "title": "Run a Model Locally",
+              "description": "Install Ollama and pull the model you chose in Model Landscape. Send it the same prompt you sent your hosted model earlier in this phase, and note your first impressions before you measure anything.",
+              "resources": [
+                {
+                  "label": "Ollama",
+                  "url": "https://ollama.com/"
+                }
+              ]
+            },
+            {
+              "uuid": "d91f401a-d018-40a6-94a3-0dcf3fc8e0bc",
+              "order": 2,
+              "action": "practice",
+              "title": "Instrument Your Calls",
+              "description": "Log every call on both paths — prompt, model, input and output tokens, time-to-first-token, total latency, and computed cost. Local calls cost no money but they do cost time and hardware; record both so the comparison is honest."
+            },
+            {
+              "uuid": "bdadc9f6-b13e-49ee-8676-24e49454106d",
+              "order": 3,
+              "action": "practice",
+              "title": "Run the Comparison",
+              "description": "Send the same set of prompts to both models. Record quality, latency, and cost for each, and note specifically where the local model breaks down — that boundary is the most useful thing you will learn in this phase."
+            },
+            {
+              "uuid": "df9bb85b-2a09-4f51-baf0-2d1ad06cd9d0",
+              "order": 4,
+              "action": "practice",
+              "title": "Publish Your Findings",
+              "description": "Push a public repository containing your code, your logged measurements, and a README documenting the hosted-versus-local comparison. Write it for someone deciding between the two, not as a lab report. This is your submission for verification."
+            }
+          ]
+        }
+      ],
+      "estimated_minutes": 1510
+    }
+  ]
+}

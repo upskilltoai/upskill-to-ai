@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: 935c003a-e9f4-4c24-b34f-9f10788e73d8
+slug: first-contact-lab
+name: First Contact Lab
+estimated_minutes: 240
+is_capstone: true
+description: >-
+  The Phase 1 capstone. Run the same prompt against a hosted model and a local
+  one, measure both, and publish the comparison. Everything in this phase exists
+  to make this possible.
+
+objectives:
+- uuid: 716dadd7-29aa-4285-8974-30cba2496b38
+  order: 1
+  text: Run an open-weight model locally and send it the same prompt you send a hosted model.
+- uuid: 7cafc49d-e527-44c3-8410-81509c7e7fd9
+  order: 2
+  text: Instrument LLM calls so token usage, latency, and cost are observable rather than guessed at.
+- uuid: f31a72b4-a2c5-4a5e-ac57-39d32b2e9663
+  order: 3
+  text: >-
+    Compare a hosted and a local model on quality, latency, and cost, with your
+    own measurements as evidence.
+- uuid: bde78f21-d8ef-40b5-8dce-bd8291cf1a34
+  order: 4
+  text: Publish a technical write-up that a stranger could act on.
+
+steps:
+- uuid: 3664c925-fe9e-40ad-9da5-f97063a50396
+  order: 1
+  action: practice
+  title: Run a Model Locally
+  description: >-
+    Install Ollama and pull the model you chose in Model Landscape. Send it
+    the same prompt you sent your hosted model earlier in this phase, and note
+    your first impressions before you measure anything.
+  resources:
+  - label: Ollama
+    url: https://ollama.com/
+
+- uuid: d91f401a-d018-40a6-94a3-0dcf3fc8e0bc
+  order: 2
+  action: practice
+  title: Instrument Your Calls
+  description: >-
+    Log every call on both paths — prompt, model, input and output tokens,
+    time-to-first-token, total latency, and computed cost. Local calls cost no
+    money but they do cost time and hardware; record both so the comparison is
+    honest.
+
+- uuid: bdadc9f6-b13e-49ee-8676-24e49454106d
+  order: 3
+  action: practice
+  title: Run the Comparison
+  description: >-
+    Send the same set of prompts to both models. Record quality, latency, and
+    cost for each, and note specifically where the local model breaks down —
+    that boundary is the most useful thing you will learn in this phase.
+
+- uuid: df9bb85b-2a09-4f51-baf0-2d1ad06cd9d0
+  order: 4
+  action: practice
+  title: Publish Your Findings
+  description: >-
+    Push a public repository containing your code, your logged measurements,
+    and a README documenting the hosted-versus-local comparison. Write it for
+    someone deciding between the two, not as a lab report. This is your
+    submission for verification.

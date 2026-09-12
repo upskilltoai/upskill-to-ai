@@ -1,0 +1,16 @@
+[project]
+name = "upskill-to-ai"
+version = "0.1.0"
+description = "A verification-driven curriculum that takes a learner from programming competency to practicing AI Engineer."
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0",
+    "jsonschema>=4.21",
+    "ruamel-yaml>=0.18",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv]
+package = false

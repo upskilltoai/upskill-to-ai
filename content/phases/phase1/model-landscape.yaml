@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: 09d41254-02bf-4bc6-9e88-9ce47d640d34
+slug: model-landscape
+name: Model Landscape
+estimated_minutes: 210
+description: >-
+  Who makes the models, how they differ, and how to evaluate a claim about one —
+  including why leaderboard position is a weak signal for your use case.
+
+objectives:
+- uuid: f44e10eb-698c-4def-b308-3d072481f335
+  order: 1
+  text: Navigate the current landscape of proprietary and open-weight model families.
+- uuid: da70d2b8-188d-4dcf-a96d-c74b871cfa43
+  order: 2
+  text: >-
+    Read a model card and extract what matters for a build decision — context
+    window, license, intended use, known limitations.
+- uuid: 097e0f05-e874-4379-a804-47eb9daf0f38
+  order: 3
+  text: Explain why "open weights" is not "open source", and what a given model's license actually permits.
+- uuid: 4c7aea3f-67c6-4092-a608-e614ede98d8c
+  order: 4
+  text: Read a model's parameter count and quantization label to judge whether it will run on given hardware.
+- uuid: d0bf0bcf-6451-45e5-8fbf-ad4d12133102
+  order: 5
+  text: >-
+    Explain how benchmark results mislead — contamination, leaderboard
+    overfitting, and the gap from your own use case.
+- uuid: 439880a3-fea4-4d62-b0e8-a3ab50908be4
+  order: 6
+  text: Assemble your own model comparison for a specific use case instead of deferring to a ranking.
+
+steps:
+- uuid: dfccb042-dd77-477c-8458-d84ee0ef1e4c
+  order: 1
+  action: read
+  title: Frontier Model Providers
+  description: >-
+    Compare the model line-ups side by side. Read both regardless of which
+    provider you chose — knowing the landscape is the point of this step.
+  resources:
+  - label: Anthropic — Models overview
+    url: https://platform.claude.com/docs/en/models/overview
+  - label: OpenAI — Models
+    url: https://platform.openai.com/docs/models
+
+- uuid: 5f13c68a-f4ca-4686-8bee-2cdf3d3e95ac
+  order: 2
+  action: read
+  title: Reading a Model Card
+  description: >-
+    What a model card is meant to contain, and which fields actually change a
+    build decision.
+  resources:
+  - label: Hugging Face — Model cards
+    url: https://huggingface.co/docs/hub/model-cards
+
+- uuid: 53b5f3e8-6704-4f8f-bcc4-406b45cc8b08
+  order: 3
+  action: practice
+  title: Open-Weight Models
+  description: >-
+    Read one real model card end to end and write down its license, context
+    window, and intended use. Pick either model below.
+  resources:
+  - label: Qwen3-8B
+    url: https://huggingface.co/Qwen/Qwen3-8B
+  - label: Mistral-7B-Instruct
+    url: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+
+- uuid: 99813079-3cb5-4f5e-918c-e48c63adbd71
+  order: 4
+  action: read
+  title: Open Weights vs Open Source
+  description: >-
+    Why most models described as "open" are not open source, and what the
+    distinction means for what you are permitted to build.
+  resources:
+  - label: Open Source Initiative — The Open Source AI Definition
+    url: https://opensource.org/ai/open-source-ai-definition
+
+- uuid: bd502b53-0482-4545-9c03-a24928303afc
+  order: 5
+  action: practice
+  title: Model Sizes and Parameters
+  description: >-
+    Browse the model library and compare parameter counts, quantization tags,
+    and download sizes across one family. Then read why those tags exist.
+    Choose the model you will run locally in this phase's capstone.
+  resources:
+  - label: Ollama model library
+    url: https://ollama.com/library
+  - label: Hugging Face — Quantization
+    url: https://huggingface.co/docs/transformers/main/en/quantization/overview
+
+- uuid: 805b75c4-dfe5-4da1-b381-f48fe05db175
+  order: 6
+  action: explore
+  title: Model Leaderboards and Rankings
+  description: >-
+    Explore two ranking sources and note where they disagree. Disagreement
+    between credible rankings is the clearest evidence that a single number
+    cannot answer "which model should I use".
+  resources:
+  - label: LMArena
+    url: https://lmarena.ai/
+  - label: Artificial Analysis
+    url: https://artificialanalysis.ai/
+
+- uuid: 2b698e84-7b72-4980-ac4d-dd2eecdb15b9
+  order: 7
+  action: read
+  title: Why Benchmarks Mislead
+  description: >-
+    Read the Automatic benchmarks sections — Basics, then Tips and tricks —
+    for how contamination and leaderboard overfitting inflate scores.
+  resources:
+  - label: Hugging Face — LLM Evaluation Guidebook
+    url: https://huggingface.co/spaces/OpenEvals/evaluation-guidebook
+
+- uuid: a0a705e8-c928-459b-a119-5583475cac83
+  order: 8
+  action: read
+  title: Keeping Pace with the Field
+  description: >-
+    Read the most recent annual retrospective. The goal is calibration: what
+    changed in a year, and how much of what you just learned has a shelf life.
+  resources:
+  - label: Simon Willison
+    url: https://simonwillison.net/
+
+- uuid: 9f3f1e53-2e7e-4d4b-8c39-9d400ddf9197
+  order: 9
+  action: practice
+  title: Build a Model Comparison Matrix
+  description: >-
+    Build a spreadsheet of six models against context window, input and output
+    price, modalities, license, and hosted or local. Then pick one for a
+    use case you care about and write down why.

@@ -1,0 +1,41 @@
+# Private Notes
+private/
+
+# Claude Code Project Instructions
+CLAUDE.md
+.claude/
+
+# Not Yet
+docs/
+steps-research/
+PORTAL-BUILD-PLAN.md
+PROJECT-CHECKLIST.md
+TECH-STACK-BACKLOG.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Frontend Tooling
+/tailwindcss
+
+# Docker
+docker-compose.override.yml
+
+# macOS
+.DS_Store

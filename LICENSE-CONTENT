@@ -1,0 +1,37 @@
+Curriculum Content License
+
+This license applies only to:
+
+- content/phases/          (topic and step data: titles, descriptions, objectives,
+                             and the selection and ordering of resources)
+- content/curriculum.meta.yaml
+- content/curriculum.json  (the compiled artifact built from the above)
+
+It does not apply to anything else in this repository — see LICENSE (MIT) for
+the pipeline scripts, schemas, tooling, and design documentation.
+
+---
+
+The material covered above is licensed under a Creative Commons
+Attribution 4.0 International License (CC BY 4.0).
+
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+Full legal text:        https://creativecommons.org/licenses/by/4.0/legalcode
+
+In short: you may share, adapt, and even use this curriculum commercially,
+as long as you give appropriate credit.
+
+---
+
+What this license does NOT cover
+
+Most steps in this curriculum point to material the author did not create —
+official documentation, videos, articles, and books owned by their original
+authors (e.g. Anthropic, OpenAI, Hugging Face, individual creators). This
+license grants no rights whatsoever to that third-party material. Each such
+resource remains solely under its own creator's copyright and terms; this
+repository only records a title, a URL, and a short note pointing to it.
+
+What this license does cover is the author's own original work: the written
+descriptions and objectives, and the specific selection, sequencing, and
+structuring of which resource appears at which point in the curriculum.

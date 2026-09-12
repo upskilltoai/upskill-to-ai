@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: eb6f3522-e1d1-4f18-b391-15ed86a32279
+slug: inference-and-cost
+name: Inference and Cost
+estimated_minutes: 195
+description: >-
+  How sampling settings shape output, why the same prompt gives different
+  answers, and what an LLM feature actually costs in tokens, latency, and money.
+
+objectives:
+- uuid: 4505e237-86c8-40cc-b011-801632632a68
+  order: 1
+  text: Explain how temperature and top-p shape output, and why identical prompts produce different results.
+- uuid: 14f40533-bed1-482f-8e1c-8bf6b0d1f196
+  order: 2
+  text: Read a provider's pricing page and explain why input, output, and cached tokens are priced differently.
+- uuid: 6512006a-6265-4133-9318-da5dbf8661e0
+  order: 3
+  text: Measure time-to-first-token and total latency, and explain which one users actually feel.
+- uuid: f04d0fef-8f13-4c1e-9767-79142d23c2b4
+  order: 4
+  text: Account for reasoning tokens when estimating what a feature will cost.
+- uuid: b728fe2c-0fac-4023-8d5f-e59c06dd4afb
+  order: 5
+  text: Produce a defensible monthly cost estimate for an LLM feature at a stated usage level.
+
+steps:
+- uuid: 5669df83-9d28-4053-a425-df8e45cbe6a0
+  order: 1
+  action: read
+  title: Sampling Parameters
+  description: >-
+    Start with the concept — what temperature does, and why temperature 0 is
+    still not fully deterministic. Then read the API reference for the actual
+    parameter names, ranges, and defaults you will pass in code.
+  resources:
+  - label: Anthropic — Glossary, Temperature entry
+    url: https://platform.claude.com/docs/en/about-claude/glossary
+    note: concept
+  - label: OpenAI — Responses API reference
+    url: https://platform.openai.com/docs/api-reference/responses/create
+    note: parameter reference
+
+- uuid: 92e364f7-a85d-48f0-8ee2-ca1fc39b83f6
+  order: 2
+  action: practice
+  title: Temperature in Practice
+  description: >-
+    Run one prompt five times at temperature 0 and five times at 1. Record the
+    variance you observe, then write down why temperature 0 still did not give
+    you five identical answers.
+
+- uuid: 9f7dfa0e-0f43-45b1-a4b6-e3a6ef7725aa
+  order: 3
+  action: read
+  title: Token Pricing Models
+  description: >-
+    Read your provider's pricing page and note the three different rates:
+    input, output, and cached input. Output is typically several times the
+    price of input, which shapes how you design prompts.
+  variant_dimension: provider
+  variants:
+  - key: anthropic
+    label: Anthropic
+    resources:
+    - label: Pricing
+      url: https://platform.claude.com/docs/en/about-claude/pricing
+  - key: openai
+    label: OpenAI
+    resources:
+    - label: Pricing
+      url: https://platform.openai.com/docs/pricing
+
+- uuid: 0b1d728f-6b8a-4fa0-9cbb-725d1099a79e
+  order: 4
+  action: read
+  title: Latency and Time to First Token
+  description: >-
+    Time-to-first-token, time-per-output-token, and end-to-end latency measure
+    different things. Pay attention to why TTFT dominates what a user
+    perceives as speed, then skim the methodology page for how these are
+    measured in published comparisons.
+  resources:
+  - label: "ClickHouse — LLM inference latency: TTFT, tokens per second, and what to measure"
+    url: https://clickhouse.com/resources/engineering/llm-inference-latency
+  - label: Artificial Analysis — Methodology
+    url: https://artificialanalysis.ai/methodology
+
+- uuid: fd999d6d-d6cf-4f10-898e-cd347c0f270b
+  order: 5
+  action: read
+  title: Reasoning Tokens and Their Cost
+  description: >-
+    Reasoning models generate tokens you never see but do pay for. Understand
+    how thinking is controlled and how it is billed before you estimate costs.
+  variant_dimension: provider
+  variants:
+  - key: anthropic
+    label: Anthropic
+    resources:
+    - label: Steering thinking
+      url: https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost
+  - key: openai
+    label: OpenAI
+    resources:
+    - label: Reasoning
+      url: https://platform.openai.com/docs/guides/reasoning
+
+- uuid: bd49c84f-834d-4dd4-8c96-3411a2de07c9
+  order: 6
+  action: practice
+  title: Measuring Latency Across Models
+  description: >-
+    Write a script that measures time-to-first-token and total latency for the
+    same prompt across two or three models, and tabulate the results. Streaming
+    is what makes TTFT observable, so stream the responses.
+
+- uuid: 03cf0dc1-63dd-4920-901b-97f92483dd54
+  order: 7
+  action: practice
+  title: Estimate Production Costs
+  description: >-
+    Project the monthly cost of a feature serving 1,000 daily users at five
+    messages each. State your assumptions about prompt and response length,
+    justify the model you chose, and note what would change the answer most.

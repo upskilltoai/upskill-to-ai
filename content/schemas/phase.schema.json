@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upskill-to-ai/schemas/phase.schema.json",
+  "title": "Phase",
+  "description": "A competency cluster. The last topic of every phase is a capstone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "uuid",
+    "slug",
+    "name",
+    "short_description",
+    "description",
+    "order",
+    "topics"
+  ],
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Stable identifier. Never changes, even if name or slug does."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^phase[0-9]+$",
+      "description": "URL segment, e.g. phase1."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Display name, e.g. 'AI and LLM Foundations'."
+    },
+    "short_description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "One line, for cards and listings."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Full paragraph shown on the phase page."
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Position in the curriculum."
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "description": "Ordered topic slugs. This list, not the filenames, defines display order."
+    },
+    "hands_on_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          }
+        }
+      },
+      "description": "Slugs of the verification requirements gating this phase's capstone. Populated once capstones are designed."
+    }
+  }
+}

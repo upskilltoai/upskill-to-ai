@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../schemas/phase.schema.json
+uuid: 605911ce-e296-43a3-ae04-0e97a75dbd19
+slug: phase1
+name: AI and LLM Foundations
+order: 1
+short_description: >-
+  Build the mental model, vocabulary, and cost intuition behind large language
+  models, then prove it by running one prompt against a hosted model and a local
+  one and publishing the comparison.
+description: >-
+  Phase 1 establishes everything the rest of the curriculum assumes. You will
+  learn what a large language model actually does when it generates text, get a
+  working development environment and make your first authenticated API call,
+  build the vocabulary of tokens and context windows, learn to judge models
+  rather than trust leaderboards, and develop real intuition for what an LLM
+  feature costs in tokens, latency, and money. The phase closes by running the
+  same prompt against a hosted model and a local one, measuring both, and
+  publishing what you found.
+topics:
+- how-llms-work
+- first-api-call
+- tokens-and-context
+- adaptation-strategies
+- model-landscape
+- inference-and-cost
+- ai-assisted-development
+- first-contact-lab

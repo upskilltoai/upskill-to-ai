@@ -1,0 +1,7 @@
+# Authoritative curriculum content version.
+#
+# Bump this integer whenever authored content changes in a way that should
+# produce a new compiled artifact — phases, topics, steps, objectives, or
+# resources. Once the version gate is built, the compiler will refuse to run
+# unless this value is strictly greater than the committed artifact's version.
+curriculum_version: 1

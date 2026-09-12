@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: 7b0384ca-60a3-442b-a373-f4412efc0965
+slug: adaptation-strategies
+name: Adaptation Strategies
+estimated_minutes: 150
+description: >-
+  The practical ways to make a model do what you need — prompting, retrieval,
+  and fine-tuning — and how to tell which one a problem calls for. Training a
+  model from scratch is a fourth option and almost never the right one.
+
+objectives:
+- uuid: 470b8360-67e1-4493-a5cd-11e572a3ef26
+  order: 1
+  text: Compare prompting, retrieval, and fine-tuning on cost, latency, data requirements, and maintenance burden.
+- uuid: fbb40a0a-0002-4d0d-8cd1-2ff051b0920c
+  order: 2
+  text: Select an adaptation strategy for a given problem and defend the choice.
+- uuid: acd47bd1-ee12-4f4c-80d7-b2be9cffc271
+  order: 3
+  text: >-
+    Recognise the narrow cases where fine-tuning is genuinely warranted — and
+    the far more common ones where it is not.
+
+steps:
+- uuid: 4a0499ae-1f87-401b-bfa2-c006f886f91f
+  order: 1
+  action: watch
+  title: Prompting, RAG, and Fine-Tuning Compared
+  description: >-
+    A short overview of the three approaches and what each is good for. Watch
+    this first for the shape, then read the decision framework that follows.
+  duration_minutes: 13
+  resources:
+  - label: IBM Technology — RAG vs Fine-Tuning vs Prompt Engineering
+    url: https://www.youtube.com/watch?v=zYGDpG-pTho
+
+- uuid: 0520d0e3-fe97-4794-b338-75b734d31f81
+  order: 2
+  action: read
+  title: Choosing an Adaptation Strategy
+  description: >-
+    The overview turned into a decision framework. Written by one provider,
+    but the reasoning applies regardless of which you use.
+  resources:
+  - label: OpenAI — Optimizing LLM accuracy
+    url: https://platform.openai.com/docs/guides/optimizing-llm-accuracy
+
+- uuid: cbc04581-1225-4a44-bb0d-ee36d2301d27
+  order: 3
+  action: read
+  title: When Fine-Tuning Is Worth It
+  description: >-
+    The framework applied to the option people over-reach for. Note what
+    fine-tuning does not fix — it teaches form and style, not facts.
+  resources:
+  - label: OpenAI — Fine-tuning
+    url: https://platform.openai.com/docs/guides/fine-tuning
+    note: Not provider-specific — the Claude API does not currently offer fine-tuning
+
+- uuid: 43f41fe5-803a-4baa-8b18-d181bfe9d5b5
+  order: 4
+  action: explore
+  title: AI Engineering, Chapter 1
+  description: >-
+    A practitioner's framing of the whole discipline and how building with
+    foundation models differs from traditional machine learning.
+  resources:
+  - label: Chip Huyen — AI Engineering
+    url: https://www.oreilly.com/library/view/ai-engineering/9781098166298/
+
+- uuid: 60624c40-aff8-4a54-9780-7ebd594cabba
+  order: 5
+  action: practice
+  title: Choose the Right Approach
+  description: >-
+    For five scenarios — internal documentation Q&A, brand-voice copywriting,
+    medical terminology, real-time stock answers, and enforcing a house code
+    style — pick an approach and justify each choice in two sentences. Commit
+    your answers; you will revisit them after Phase 4.

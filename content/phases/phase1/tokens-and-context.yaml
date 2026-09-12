@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: 4e0dd97e-48d9-4dd6-9404-1c4145a30d2b
+slug: tokens-and-context
+name: Tokens and Context
+estimated_minutes: 140
+description: >-
+  How text becomes tokens, what a context window actually holds, and what both
+  mean for what you pay.
+
+objectives:
+- uuid: 9ce478d9-41b5-4760-b888-1215f49eb268
+  order: 1
+  text: >-
+    Explain why models process tokens rather than words, and anticipate where
+    tokenization behaves unintuitively — non-English text, code, numbers.
+- uuid: a3b1e40f-fa12-44a5-a2b8-d36f18ab4068
+  order: 2
+  text: Determine what a given model's context window holds, and what competes for that space.
+- uuid: 3095d929-6308-4403-ac1c-d69a931b4694
+  order: 3
+  text: Count the tokens in a prompt programmatically and calculate what running it at scale would cost.
+- uuid: bfa44908-0fbc-4eba-99e2-77f01e3b8a73
+  order: 4
+  text: Recognise what an embedding is, well enough to build on it in Phase 4.
+
+steps:
+- uuid: dcb7297a-8c97-46f7-bdb3-93477ca44c0a
+  order: 1
+  action: read
+  title: Tokens and Tokenization
+  description: >-
+    Read the Tokens entry, and the surrounding vocabulary while you are there.
+    The page states up front that these concepts are not specific to any one
+    provider, so it serves whichever you chose.
+  resources:
+  - label: Anthropic — Glossary
+    url: https://platform.claude.com/docs/en/about-claude/glossary
+
+- uuid: acc2eb3b-985b-4b4c-bd76-06d0c9320957
+  order: 2
+  action: practice
+  title: Tokenization in Practice
+  description: >-
+    Tokenize English, a non-English language, source code, emoji, and long
+    numbers. Compare the counts across models and note where they explode —
+    that gap is a real cost difference you will pay for in production.
+  resources:
+  - label: Tiktokenizer
+    url: https://tiktokenizer.vercel.app/
+
+- uuid: 4d3a98dc-5923-4f16-b5bd-d182dcff65b1
+  order: 3
+  action: read
+  title: Context Windows
+  description: >-
+    What the window holds, and what competes for the space — system prompt,
+    history, retrieved documents, tool definitions, and the response itself.
+  variant_dimension: provider
+  variants:
+  - key: anthropic
+    label: Anthropic
+    resources:
+    - label: Context windows
+      url: https://platform.claude.com/docs/en/build-with-claude/context-windows
+  - key: openai
+    label: OpenAI
+    resources:
+    - label: Models
+      url: https://platform.openai.com/docs/models
+
+- uuid: a2643422-af5f-4da8-bb80-3166e813c0ad
+  order: 4
+  action: practice
+  title: Counting Tokens and Estimating Cost
+  description: >-
+    Count the tokens in a real prompt programmatically, then compute what
+    1,000 calls would cost. Compare your estimate against the usage figures
+    your own script reported in the previous topic.
+  variant_dimension: provider
+  variants:
+  - key: anthropic
+    label: Anthropic
+    resources:
+    - label: Token counting
+      url: https://platform.claude.com/docs/en/build-with-claude/token-counting
+  - key: openai
+    label: OpenAI
+    resources:
+    - label: tiktoken
+      url: https://github.com/openai/tiktoken
+
+- uuid: 265ec9a5-343c-4aff-8a50-945bcfbbc8a0
+  order: 5
+  action: explore
+  title: Embeddings — A First Look
+  description: >-
+    A long-form primer. Read the opening sections for the intuition only —
+    what an embedding represents and why related meanings land near each
+    other. Phase 4 covers embeddings properly.
+  resources:
+  - label: Vicki Boykis — What are embeddings
+    url: https://vickiboykis.com/what_are_embeddings/
+
+- uuid: 31f185a2-785a-479f-acc3-dfe21927ebc2
+  order: 6
+  action: explore
+  title: Build a Tokenizer from Scratch
+  description: >-
+    Implement byte pair encoding yourself. Long, and worth it if you want the
+    strange behaviours of LLMs to stop being surprising.
+  duration_minutes: 133
+  optional: true
+  resources:
+  - label: Andrej Karpathy — Let's build the GPT Tokenizer
+    url: https://www.youtube.com/watch?v=zduSFxRajkE

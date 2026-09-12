@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=../../schemas/topic.schema.json
+uuid: d5dbcddd-a098-46d3-928a-4091a443e41b
+slug: how-llms-work
+name: How LLMs Work
+estimated_minutes: 185
+description: >-
+  What a large language model actually does when it produces text — from
+  next-token prediction to the transformer architecture and the training
+  pipeline that turns raw prediction into a helpful assistant.
+
+objectives:
+- uuid: 004ef954-0ace-4d2a-9943-0b0d84ee9bf8
+  order: 1
+  text: Explain next-token prediction, and why a model's output is generated rather than retrieved.
+- uuid: 902f5c54-85ad-4e4b-8705-46f9e03d28ff
+  order: 2
+  text: Describe how a transformer turns a sequence of tokens into a prediction, and what attention contributes.
+- uuid: 2d460b4c-24d3-4f66-870e-794c6431cf6f
+  order: 3
+  text: Outline the training pipeline — pretraining, instruction tuning, RLHF — and what each stage changes about model behaviour.
+- uuid: 77c2fb35-2f4d-4e23-8915-37c8745f574a
+  order: 4
+  text: Explain an LLM to a non-technical audience without reaching for metaphors that mislead.
+
+steps:
+- uuid: d61aedfe-0923-404c-9a3d-dffdc940e1d9
+  order: 1
+  action: watch
+  title: What Is a Large Language Model?
+  description: >-
+    The shortest honest answer to the question. Start here for the shape of
+    the idea before spending an hour on the details.
+  duration_minutes: 8
+  resources:
+  - label: 3Blue1Brown — Large Language Models explained briefly
+    url: https://www.youtube.com/watch?v=LPZh9BOjkQs
+
+- uuid: 2ed9294c-286f-4195-b317-7bfc810a59ed
+  order: 2
+  action: watch
+  title: How LLMs Are Built and Used
+  description: >-
+    The complete mental model in one sitting, covering pretraining and
+    fine-tuning at a high level along with where the technology is heading.
+  duration_minutes: 60
+  resources:
+  - label: Andrej Karpathy — Intro to Large Language Models
+    url: https://www.youtube.com/watch?v=zjkBMFhNj_g
+
+- uuid: 0f8d23b6-e789-48b1-bdee-150884b3ef24
+  order: 3
+  action: watch
+  title: Transformers and Next-Token Prediction
+  description: >-
+    What actually happens to your text inside the model. Focus on the
+    predict-sample-repeat loop and why generation is probabilistic.
+  duration_minutes: 27
+  resources:
+  - label: 3Blue1Brown — Transformers, the tech behind LLMs (Chapter 5)
+    url: https://www.youtube.com/watch?v=wjZofJX0v4M
+
+- uuid: 14f476dd-4069-483e-bb5c-780be2314dd0
+  order: 4
+  action: watch
+  title: The Attention Mechanism
+  description: >-
+    Attention is the piece that lets a model decide which earlier words matter
+    for the next one. This is the single most useful mechanism to understand.
+  duration_minutes: 26
+  resources:
+  - label: 3Blue1Brown — Attention in transformers, step-by-step (Chapter 6)
+    url: https://www.youtube.com/watch?v=eMlx5fFNoYc
+
+- uuid: 6d3a703f-d7bc-47b6-a33e-7190535ab091
+  order: 5
+  action: read
+  title: Transformer Architecture in Detail
+  description: >-
+    The same architecture in prose and diagrams. Reading it after the videos
+    fills in the parts that move too quickly on screen.
+  resources:
+  - label: Jay Alammar — The Illustrated Transformer
+    url: https://jalammar.github.io/illustrated-transformer/
+
+- uuid: 5c5c320a-6ae6-4d0b-a3d1-b87e2665fabb
+  order: 6
+  action: read
+  title: Reinforcement Learning from Human Feedback
+  description: >-
+    How a raw next-token predictor becomes something that follows
+    instructions. This completes the pipeline picture started in step 2.
+  resources:
+  - label: Hugging Face — Illustrating Reinforcement Learning from Human Feedback
+    url: https://huggingface.co/blog/rlhf
+
+- uuid: 26ed4c9b-f443-4c9b-88a4-db409014ce6c
+  order: 7
+  action: practice
+  title: Explain an LLM in Your Own Words
+  description: >-
+    Write a one-page explainer aimed at a non-technical reader and commit it
+    to your repository. If you cannot explain it without a misleading
+    metaphor, you have found the part you do not yet understand.
+
+- uuid: a8724ea4-e617-47c5-bdbc-113f0fe06837
+  order: 8
+  action: watch
+  title: The Full Training Stack
+  description: >-
+    The complete training pipeline in depth — pretraining data, tokenization,
+    supervised fine-tuning, RLHF, hallucination, and tool use.
+  duration_minutes: 211
+  optional: true
+  resources:
+  - label: Andrej Karpathy — Deep Dive into LLMs like ChatGPT
+    url: https://www.youtube.com/watch?v=7xTGNNLPyMI
+
+- uuid: baa08e59-e26e-4053-bf8d-74b8a7fd20f4
+  order: 9
+  action: watch
+  title: Where Facts Live Inside a Model
+  description: >-
+    How factual knowledge might be stored in a network's weights. Useful
+    background for reasoning about hallucination later in the curriculum.
+  duration_minutes: 22
+  optional: true
+  resources:
+  - label: 3Blue1Brown — How might LLMs store facts (Chapter 7)
+    url: https://www.youtube.com/watch?v=9-Jl0dxWQs8
