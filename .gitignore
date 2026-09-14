@@ -8,9 +8,10 @@ CLAUDE.md
 # Not Yet
 docs/
 steps-research/
-PORTAL-BUILD-PLAN.md
 PROJECT-CHECKLIST.md
+PORTAL-BUILD-PLAN.md
 TECH-STACK-BACKLOG.md
+LEARNING-NOTES.md
 
 # Secrets
 .env
