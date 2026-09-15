@@ -14,6 +14,9 @@ Usage: ./run.sh <command>
   content   Build the curriculum artifact (uuids, then compile)
   uuids     Add uuids to any new phase, topic, objective, or step
   compile   Validate content and write content/curriculum.json
+  test      Run the app's test suite
+  check     Run everything — content build + tests. The pre-commit/CI command
+  dev       Run the app locally, reloading on code changes
 EOF
 }
 
@@ -30,10 +33,26 @@ content() {
   compile_curriculum
 }
 
+run_tests() {
+  uv run pytest
+}
+
+check() {
+  content
+  run_tests
+}
+
+dev() {
+  uv run uvicorn app.main:app --reload --port 8000
+}
+
 case "${1:-}" in
   content)            content ;;
   uuids)              uuids ;;
   compile)            compile_curriculum ;;
+  test)               run_tests ;;
+  check)              check ;;
+  dev)                dev ;;
   "" | help | -h | --help)  usage ;;
   *)
     echo "Unknown command: $1" >&2

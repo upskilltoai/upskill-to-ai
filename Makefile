@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile
+.PHONY: help content uuids compile test check dev
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -18,3 +18,11 @@ uuids:  ## Add uuids to any new phase, topic, objective, or step
 
 compile:  ## Validate content and write content/curriculum.json
 	@uv run python scripts/compile_curriculum.py
+
+test:  ## Run the app's test suite
+	@uv run pytest
+
+check: content test  ## Run everything — content build + tests. The pre-commit/CI command
+
+dev:  ## Run the app locally, reloading on code changes — visit http://localhost:8000
+	@uv run uvicorn app.main:app --reload --port 8000
