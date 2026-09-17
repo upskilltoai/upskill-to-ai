@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs
+.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -45,3 +45,12 @@ docker-stop:  ## Stop and remove the running Docker container
 
 docker-logs:  ## Follow the running container's logs
 	@docker logs -f upskill-to-ai-app
+
+compose-up:  ## Build and start app + Postgres together — visit http://localhost:8000
+	@docker compose up -d --build
+
+compose-down:  ## Stop and remove app + Postgres (keeps the Postgres data volume)
+	@docker compose down
+
+compose-logs:  ## Follow every service's logs together
+	@docker compose logs -f

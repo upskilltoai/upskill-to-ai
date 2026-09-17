@@ -23,6 +23,9 @@ Usage: ./run.sh <command>
   docker-run    Run the app in Docker — visit http://localhost:8000
   docker-stop   Stop and remove the running Docker container
   docker-logs   Follow the running container's logs
+  compose-up    Build and start app + Postgres together
+  compose-down  Stop and remove app + Postgres (keeps the data volume)
+  compose-logs  Follow every service's logs together
 EOF
 }
 
@@ -77,6 +80,18 @@ docker_logs() {
   docker logs -f upskill-to-ai-app
 }
 
+compose_up() {
+  docker compose up -d --build
+}
+
+compose_down() {
+  docker compose down
+}
+
+compose_logs() {
+  docker compose logs -f
+}
+
 case "${1:-}" in
   content)            content ;;
   uuids)              uuids ;;
@@ -90,6 +105,9 @@ case "${1:-}" in
   docker-run)         docker_run ;;
   docker-stop)        docker_stop ;;
   docker-logs)        docker_logs ;;
+  compose-up)         compose_up ;;
+  compose-down)       compose_down ;;
+  compose-logs)       compose_logs ;;
   "" | help | -h | --help)  usage ;;
   *)
     echo "Unknown command: $1" >&2
