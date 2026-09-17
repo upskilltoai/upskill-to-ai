@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}upskill-to-ai{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/output.css" />
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="border-b p-4">
+    <h1 class="text-xl font-bold">upskill-to-ai</h1>
+  </header>
+
+  <nav class="border-b p-4">
+    <a href="/" class="text-blue-600 hover:underline">Home</a>
+  </nav>
+
+  <main class="flex-1 p-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t p-4 text-sm text-gray-500">
+    &copy; upskill-to-ai
+  </footer>
+</body>
+</html>
