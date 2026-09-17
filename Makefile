@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile test check dev
+.PHONY: help content uuids compile test check dev css css-watch
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -26,3 +26,9 @@ check: content test  ## Run everything — content build + tests. The pre-commit
 
 dev:  ## Run the app locally, reloading on code changes — visit http://localhost:8000
 	@uv run uvicorn app.main:app --reload --port 8000
+
+css:  ## Build the Tailwind CSS once
+	@uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css
+
+css-watch:  ## Rebuild Tailwind CSS automatically as templates change — run alongside `make dev`
+	@uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch

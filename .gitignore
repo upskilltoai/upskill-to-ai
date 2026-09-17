@@ -32,8 +32,8 @@ __pycache__/
 htmlcov/
 *.egg-info/
 
-# Frontend Tooling
-/tailwindcss
+# Frontend Tooling — generated CSS, not the source input.css
+app/static/css/output.css
 
 # Docker
 docker-compose.override.yml

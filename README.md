@@ -10,8 +10,8 @@ certificate backed by that verified work.
 
 ## Status
 
-Planning and content stage. Design decisions are locked, Phase 1 content is
-complete, and no application code exists yet.
+Design decisions are locked, Phase 1 content is complete, and the portal
+application is under active development.
 
 ## How it's structured
 
@@ -33,6 +33,23 @@ make content
 Validates every phase's YAML and compiles it into `content/curriculum.json`.
 See [`content/README.md`](content/README.md) for details, common tasks, and
 what each error message means.
+
+## Running the portal
+
+```bash
+make dev
+```
+
+Runs the app at `http://localhost:8000`, reloading automatically as you edit
+code. In a separate terminal, keep the CSS rebuilding as you edit templates:
+
+```bash
+make css-watch
+```
+
+`make css` builds it once without watching — useful for a one-off check.
+`make test` runs the test suite; `make check` runs the content build and the
+tests together, the command to run before a commit or push.
 
 ## License
 

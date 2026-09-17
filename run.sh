@@ -17,6 +17,8 @@ Usage: ./run.sh <command>
   test      Run the app's test suite
   check     Run everything — content build + tests. The pre-commit/CI command
   dev       Run the app locally, reloading on code changes
+  css       Build the Tailwind CSS once
+  css-watch Rebuild Tailwind CSS automatically as templates change
 EOF
 }
 
@@ -46,6 +48,14 @@ dev() {
   uv run uvicorn app.main:app --reload --port 8000
 }
 
+css_build() {
+  uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css
+}
+
+css_watch() {
+  uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch
+}
+
 case "${1:-}" in
   content)            content ;;
   uuids)              uuids ;;
@@ -53,6 +63,8 @@ case "${1:-}" in
   test)               run_tests ;;
   check)              check ;;
   dev)                dev ;;
+  css)                css_build ;;
+  css-watch)          css_watch ;;
   "" | help | -h | --help)  usage ;;
   *)
     echo "Unknown command: $1" >&2
