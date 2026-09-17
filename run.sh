@@ -19,6 +19,10 @@ Usage: ./run.sh <command>
   dev       Run the app locally, reloading on code changes
   css       Build the Tailwind CSS once
   css-watch Rebuild Tailwind CSS automatically as templates change
+  docker-build  Build the Docker image
+  docker-run    Run the app in Docker — visit http://localhost:8000
+  docker-stop   Stop and remove the running Docker container
+  docker-logs   Follow the running container's logs
 EOF
 }
 
@@ -56,6 +60,23 @@ css_watch() {
   uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch
 }
 
+docker_build() {
+  docker build -t upskill-to-ai .
+}
+
+docker_run() {
+  docker rm -f upskill-to-ai-app 2>/dev/null || true
+  docker run -d --name upskill-to-ai-app -p 8000:8000 upskill-to-ai
+}
+
+docker_stop() {
+  docker rm -f upskill-to-ai-app
+}
+
+docker_logs() {
+  docker logs -f upskill-to-ai-app
+}
+
 case "${1:-}" in
   content)            content ;;
   uuids)              uuids ;;
@@ -65,6 +86,10 @@ case "${1:-}" in
   dev)                dev ;;
   css)                css_build ;;
   css-watch)          css_watch ;;
+  docker-build)       docker_build ;;
+  docker-run)         docker_run ;;
+  docker-stop)        docker_stop ;;
+  docker-logs)        docker_logs ;;
   "" | help | -h | --help)  usage ;;
   *)
     echo "Unknown command: $1" >&2

@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile test check dev css css-watch
+.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -32,3 +32,16 @@ css:  ## Build the Tailwind CSS once
 
 css-watch:  ## Rebuild Tailwind CSS automatically as templates change — run alongside `make dev`
 	@uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch
+
+docker-build:  ## Build the Docker image
+	@docker build -t upskill-to-ai .
+
+docker-run:  ## Run the app in Docker — visit http://localhost:8000
+	@docker rm -f upskill-to-ai-app 2>/dev/null || true
+	@docker run -d --name upskill-to-ai-app -p 8000:8000 upskill-to-ai
+
+docker-stop:  ## Stop and remove the running Docker container
+	@docker rm -f upskill-to-ai-app
+
+docker-logs:  ## Follow the running container's logs
+	@docker logs -f upskill-to-ai-app
