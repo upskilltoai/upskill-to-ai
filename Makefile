@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs
+.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -22,7 +22,20 @@ compile:  ## Validate content and write content/curriculum.json
 test:  ## Run the app's test suite
 	@uv run pytest
 
-check: content test  ## Run everything — content build + tests. The pre-commit/CI command
+lint:  ## Lint (including security rules), and report anything auto-fixable
+	@uv run ruff check .
+
+format:  ## Auto-format the code, and apply safe lint fixes
+	@uv run ruff check . --fix
+	@uv run ruff format .
+
+typecheck:  ## Check types
+	@uv run pyright
+
+audit:  ## Scan dependencies for known vulnerabilities
+	@uv run pip-audit
+
+check: content lint typecheck test  ## Run everything — content build, lint, types, tests. The pre-commit/CI command
 
 dev:  ## Run the app locally, reloading on code changes — visit http://localhost:8000
 	@uv run uvicorn app.main:app --reload --port 8000

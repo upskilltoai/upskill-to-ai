@@ -15,8 +15,11 @@ services:
       - POSTGRES_USER=upskill
       - POSTGRES_PASSWORD=upskill
       - POSTGRES_DB=upskill
+    # Bound to localhost only. Plain "5432:5432" would listen on every host
+    # interface, putting this database — with deliberately trivial local
+    # credentials — on any network the machine joins.
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 

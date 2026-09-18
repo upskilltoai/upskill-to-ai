@@ -18,8 +18,9 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import yaml
 from jsonschema import Draft202012Validator, FormatChecker
@@ -28,6 +29,13 @@ ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
 SCHEMAS = CONTENT / "schemas"
 OUTPUT = CONTENT / "curriculum.json"
+
+# Named zone rather than a fixed offset: EST and EDT are the same zone at
+# different times of year, so "-05:00" would be wrong from March to November.
+# Naming the zone explicitly (rather than using the machine's local time) also
+# means a build produces the same wall-clock reading wherever it runs — a CI
+# runner set to UTC included.
+BUILD_TIMEZONE = ZoneInfo("America/New_York")
 
 
 class ContentError(Exception):
@@ -159,10 +167,12 @@ def main() -> int:
 
         artifact = {
             "version": version,
-            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "generated_at": datetime.now(BUILD_TIMEZONE).isoformat(timespec="seconds"),
             "phases": phases,
         }
-        OUTPUT.write_text(json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        OUTPUT.write_text(
+            json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
 
     except ContentError as error:
         print(f"\n✗ {error}\n", file=sys.stderr)
@@ -174,7 +184,9 @@ def main() -> int:
     hours = sum(p["estimated_minutes"] for p in phases) / 60
 
     print(f"✓ curriculum.json v{version}")
-    print(f"  {len(phases)} phase(s), {topics} topic(s), {objectives} objective(s), {steps} step(s)")
+    print(
+        f"  {len(phases)} phase(s), {topics} topic(s), {objectives} objective(s), {steps} step(s)"
+    )
     print(f"  {len(seen)} unique uuid(s), ~{hours:.0f}h of core content")
     return 0
 

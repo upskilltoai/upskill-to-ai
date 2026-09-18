@@ -11,13 +11,18 @@ dependencies = [
     "uvicorn[standard]>=0.52.4",
     "pydantic-settings>=2.15.0",
     "jinja2>=3.1.6",
+    "structlog>=26.1.0",
 ]
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "pip-audit>=2.10.1",
+    "pre-commit>=4.6.2",
+    "pyright>=1.1.414",
     "pytailwindcss>=0.3.1",
     "pytest>=9.1.1",
+    "ruff>=0.16.8",
 ]
 
 [tool.uv]
@@ -25,3 +30,23 @@ package = false
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/W: pycodestyle, F: pyflakes, I: import sorting, UP: modern-Python rewrites,
+# B: common bug patterns, S: security lint (bandit rules)
+select = ["E", "W", "F", "I", "UP", "B", "S"]
+# `ruff format` already enforces line width on everything it can restructure.
+# E501 then only fires on what the formatter deliberately won't touch — long
+# string literals — where hand-wrapping hurts readability for no real gain.
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests legitimately use `assert`, which S101 flags.
+"tests/*" = ["S101"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+include = ["app", "scripts", "tests"]

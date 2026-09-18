@@ -15,7 +15,11 @@ Usage: ./run.sh <command>
   uuids     Add uuids to any new phase, topic, objective, or step
   compile   Validate content and write content/curriculum.json
   test      Run the app's test suite
-  check     Run everything — content build + tests. The pre-commit/CI command
+  lint      Lint (including security rules)
+  format    Auto-format the code, and apply safe lint fixes
+  typecheck Check types
+  audit     Scan dependencies for known vulnerabilities
+  check     Run everything — content build, lint, types, tests. The pre-commit/CI command
   dev       Run the app locally, reloading on code changes
   css       Build the Tailwind CSS once
   css-watch Rebuild Tailwind CSS automatically as templates change
@@ -46,8 +50,27 @@ run_tests() {
   uv run pytest
 }
 
+lint() {
+  uv run ruff check .
+}
+
+format_code() {
+  uv run ruff check . --fix
+  uv run ruff format .
+}
+
+typecheck() {
+  uv run pyright
+}
+
+audit() {
+  uv run pip-audit
+}
+
 check() {
   content
+  lint
+  typecheck
   run_tests
 }
 
@@ -97,6 +120,10 @@ case "${1:-}" in
   uuids)              uuids ;;
   compile)            compile_curriculum ;;
   test)               run_tests ;;
+  lint)               lint ;;
+  format)             format_code ;;
+  typecheck)          typecheck ;;
+  audit)              audit ;;
   check)              check ;;
   dev)                dev ;;
   css)                css_build ;;
