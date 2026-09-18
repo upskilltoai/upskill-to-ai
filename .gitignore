@@ -8,7 +8,7 @@ steps-research/
 PROJECT-CHECKLIST.md
 PORTAL-BUILD-PLAN.md
 TECH-STACK-BACKLOG.md
-LEARNING-NOTES.md
+learning-notes/
 
 # Secrets
 .env

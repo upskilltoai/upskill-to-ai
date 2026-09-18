@@ -26,7 +26,7 @@ steps-research/
 PROJECT-CHECKLIST.md
 PORTAL-BUILD-PLAN.md
 TECH-STACK-BACKLOG.md
-LEARNING-NOTES.md
+learning-notes/
 
 # Generated fresh inside the build itself — never needed from the host
 app/static/css/output.css
