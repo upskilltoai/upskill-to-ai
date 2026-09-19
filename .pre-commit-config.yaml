@@ -3,7 +3,7 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.8
     hooks:
-      - id: ruff          # lint, including the security (bandit) rules
+      - id: ruff-check    # lint, including the security (bandit) rules
         args: [--fix]
       - id: ruff-format   # formatting
 

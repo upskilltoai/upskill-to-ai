@@ -3,10 +3,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.config import settings
+from app.curriculum.loader import load_curriculum
 from app.logging import configure_logging
 from app.middleware import SecurityHeadersMiddleware
 
 configure_logging()
+
+curriculum = load_curriculum()
 
 _is_dev = settings.environment == "development"
 
