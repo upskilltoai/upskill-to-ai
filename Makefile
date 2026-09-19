@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content uuids compile test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
+.PHONY: help content uuids compile schemas test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -18,6 +18,9 @@ uuids:  ## Add uuids to any new phase, topic, objective, or step
 
 compile:  ## Validate content and write content/curriculum.json
 	@uv run python scripts/compile_curriculum.py
+
+schemas:  ## Regenerate content/schemas/*.json from content_model.py — run after editing that file
+	@uv run python scripts/generate_schemas.py
 
 test:  ## Run the app's test suite
 	@uv run pytest

@@ -14,6 +14,7 @@ Usage: ./run.sh <command>
   content   Build the curriculum artifact (uuids, then compile)
   uuids     Add uuids to any new phase, topic, objective, or step
   compile   Validate content and write content/curriculum.json
+  schemas   Regenerate content/schemas/*.json from content_model.py
   test      Run the app's test suite
   lint      Lint (including security rules)
   format    Auto-format the code, and apply safe lint fixes
@@ -39,6 +40,10 @@ uuids() {
 
 compile_curriculum() {
   uv run python scripts/compile_curriculum.py
+}
+
+generate_schemas() {
+  uv run python scripts/generate_schemas.py
 }
 
 content() {
@@ -119,6 +124,7 @@ case "${1:-}" in
   content)            content ;;
   uuids)              uuids ;;
   compile)            compile_curriculum ;;
+  schemas)            generate_schemas ;;
   test)               run_tests ;;
   lint)               lint ;;
   format)             format_code ;;

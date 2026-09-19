@@ -38,8 +38,8 @@ content/
 ├── curriculum.meta.yaml        version number
 ├── curriculum.json             BUILD OUTPUT — never edit by hand
 ├── schemas/
-│   ├── phase.schema.json       what a valid phase looks like
-│   └── topic.schema.json       what a valid topic, objective, and step look like
+│   ├── phase.schema.json       BUILD OUTPUT — generated from ../../content_model.py
+│   └── topic.schema.json       BUILD OUTPUT — generated from ../../content_model.py
 └── phases/
     └── phase1/
         ├── _phase.yaml         phase metadata + ordered topic slugs
@@ -129,7 +129,7 @@ A display tag only. The step still appears and is still checkable; it just signa
 
 | Message | Cause | Fix |
 |---|---|---|
-| `failed validation: at <path>: …` | A field is missing, the wrong type, or an invalid value | Read the path — it points at the exact entry. Check the field against `schemas/topic.schema.json` |
+| `failed validation: at <path>: …` | A field is missing, the wrong type, or an invalid value | Read the path — it points at the exact entry. The actual rule lives in `content_model.py` (`schemas/topic.schema.json` is generated from it, for editor autocomplete) |
 | `lists topics with no file: X` | `_phase.yaml` names a slug that has no `X.yaml` | Create the file, or remove the slug |
 | `contains topic files not listed in _phase.yaml: X` | `X.yaml` exists but no topic references it | Add the slug to `topics:`, or delete the file |
 | `slug is 'X' but the filename says 'Y'` | The `slug:` field and filename disagree | Make them match |
@@ -142,6 +142,7 @@ A display tag only. The step still appears and is still checkable; it just signa
 ## Rules that are easy to forget
 
 - **Never edit `curriculum.json`.** It is generated, and the next build overwrites it.
+- **Never hand-edit `schemas/*.json`.** They're generated from `content_model.py` (`make schemas`) — the model is the source of truth, not the file.
 - **Never change or remove an existing `uuid`.** Learner progress points at it. Renaming, reordering, and rewriting are all safe; changing the UUID is not.
 - **Quote labels containing `: `.** YAML reads a colon-space as a mapping. `label: "ClickHouse — LLM inference latency: TTFT…"` needs the quotes.
 - **Update `order:` when inserting.** Nothing renumbers for you.

@@ -6,7 +6,18 @@ learner.
 
     uv run python scripts/compile_curriculum.py
 
-Structural checks beyond JSON Schema:
+Validation against a single document (required fields, patterns, formats,
+uniqueness within a list, the `variants`/`variant_dimension` pairing) is the
+Pydantic models in `content_model.py` — the source of truth for the content
+shape, which `content/schemas/*.json` are generated from (see
+`scripts/generate_schemas.py`) purely so editors can autocomplete/validate
+while authoring. This script re-validates through the models directly rather
+than the generated schema files, since a couple of the models' own rules
+(list-uniqueness, the variants pairing) don't translate into JSON Schema
+keywords a generated file could carry — going through the models is what
+actually enforces them.
+
+Structural checks beyond that, spanning more than one document:
 
 * every topic slug listed by a phase has a matching file, and vice versa
 * the last topic of every phase is marked `is_capstone`
@@ -23,12 +34,18 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import yaml
-from jsonschema import Draft202012Validator, FormatChecker
+from pydantic import BaseModel, ValidationError
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
-SCHEMAS = CONTENT / "schemas"
 OUTPUT = CONTENT / "curriculum.json"
+
+# content_model.py lives at the repo root, not inside scripts/ — running this
+# file directly (`python scripts/compile_curriculum.py`) only puts scripts/
+# itself on the import path, not ROOT, so the plain import would fail.
+sys.path.insert(0, str(ROOT))
+
+from content_model import Phase, Topic  # noqa: E402
 
 # Named zone rather than a fixed offset: EST and EDT are the same zone at
 # different times of year, so "-05:00" would be wrong from March to November.
@@ -47,20 +64,29 @@ def load_yaml(path: Path):
         return yaml.safe_load(handle)
 
 
-def make_validator(name: str) -> Draft202012Validator:
-    schema = json.loads((SCHEMAS / name).read_text(encoding="utf-8"))
-    return Draft202012Validator(schema, format_checker=FormatChecker())
+def validate(model_cls: type[BaseModel], data, path: Path) -> dict:
+    """Validate `data` against `model_cls`, returning it as a plain dict.
 
-
-def validate(validator: Draft202012Validator, data, path: Path) -> None:
-    errors = sorted(validator.iter_errors(data), key=lambda e: list(e.path))
-    if not errors:
-        return
-    lines = [f"{path.relative_to(ROOT)} failed validation:"]
-    for error in errors:
-        location = " → ".join(str(part) for part in error.path) or "(root)"
-        lines.append(f"  at {location}: {error.message}")
-    raise ContentError("\n".join(lines))
+    Converting back to a dict (rather than handing back the model instance)
+    is deliberate: every function below this one already works in terms of
+    dicts (`topic["slug"]`, `collect_uuids` walking dicts/lists, the final
+    `json.dumps`), and keeping that unchanged means the only thing this
+    function actually swaps out is *how* validation happens, not the shape
+    of everything built on top of it.
+    """
+    try:
+        instance = model_cls.model_validate(data)
+    except ValidationError as error:
+        lines = [f"{path.relative_to(ROOT)} failed validation:"]
+        for err in error.errors():
+            location = " → ".join(str(part) for part in err["loc"]) or "(root)"
+            lines.append(f"  at {location}: {err['msg']}")
+        raise ContentError("\n".join(lines)) from error
+    # exclude_none, not the default (include everything): fields left unset
+    # in the YAML (duration_minutes, resources, variants, ...) should stay
+    # absent from curriculum.json, matching how the artifact already looked
+    # before this artifact-shape wasn't touched by this change on purpose.
+    return instance.model_dump(mode="json", exclude_none=True)
 
 
 def check_steps(topic: dict, path: Path) -> None:
@@ -93,13 +119,13 @@ def collect_uuids(node, seen: dict[str, str], where: str) -> None:
             collect_uuids(item, seen, where)
 
 
-def build_phase(phase_dir: Path, topic_validator: Draft202012Validator) -> dict:
+def build_phase(phase_dir: Path) -> dict:
     phase_path = phase_dir / "_phase.yaml"
     if not phase_path.exists():
         raise ContentError(f"{phase_dir.relative_to(ROOT)} has no _phase.yaml")
 
     phase = load_yaml(phase_path)
-    validate(make_validator("phase.schema.json"), phase, phase_path)
+    phase = validate(Phase, phase, phase_path)
 
     listed = list(phase["topics"])
     on_disk = {p.stem for p in phase_dir.glob("*.yaml") if p.name != "_phase.yaml"}
@@ -122,7 +148,7 @@ def build_phase(phase_dir: Path, topic_validator: Draft202012Validator) -> dict:
     for slug in listed:
         path = phase_dir / f"{slug}.yaml"
         topic = load_yaml(path)
-        validate(topic_validator, topic, path)
+        topic = validate(Topic, topic, path)
         if topic["slug"] != slug:
             raise ContentError(
                 f"{path.relative_to(ROOT)}: slug is {topic['slug']!r} but the "
@@ -153,12 +179,11 @@ def main() -> int:
         meta = load_yaml(CONTENT / "curriculum.meta.yaml")
         version = meta["curriculum_version"]
 
-        topic_validator = make_validator("topic.schema.json")
         phase_dirs = sorted((CONTENT / "phases").glob("phase*"))
         if not phase_dirs:
             raise ContentError("No phases found under content/phases")
 
-        phases = [build_phase(d, topic_validator) for d in phase_dirs]
+        phases = [build_phase(d) for d in phase_dirs]
         phases.sort(key=lambda p: p["order"])
 
         seen: dict[str, str] = {}
