@@ -1,15 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 
 from app.config import settings
 from app.curriculum.loader import load_curriculum
+from app.curriculum.router import router as curriculum_router
 from app.logging import configure_logging
 from app.middleware import SecurityHeadersMiddleware
+from app.templates import templates
 
 configure_logging()
-
-curriculum = load_curriculum()
 
 _is_dev = settings.environment == "development"
 
@@ -22,9 +21,16 @@ app = FastAPI(
     openapi_url="/openapi.json" if _is_dev else None,
 )
 
+# On `app.state`, not a bare module-level variable: route handlers reach it
+# via `request.app.state.curriculum` (see `app/curriculum/router.py`)
+# without importing this module and risking a circular import. Still runs
+# at plain import time, before uvicorn ever starts accepting requests, so a
+# missing/malformed curriculum.json still fails loudly at startup.
+app.state.curriculum = load_curriculum()
+
 app.add_middleware(SecurityHeadersMiddleware)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
+app.include_router(curriculum_router)
 
 
 @app.get("/health")

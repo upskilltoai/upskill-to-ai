@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Curriculum — upskill-to-ai{% endblock %}
+
+{% block content %}
+<h2 class="text-3xl font-bold mb-6">Curriculum</h2>
+
+<div class="grid gap-4">
+  {% for phase in phases %}
+  <div class="card bg-base-100 shadow-sm border border-base-300">
+    <div class="card-body">
+      <h3 class="card-title">{{ phase.name }}</h3>
+      <p>{{ phase.short_description }}</p>
+      <div class="badge badge-outline">
+        {{ (phase.estimated_minutes / 60) | round(1) }}h
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
