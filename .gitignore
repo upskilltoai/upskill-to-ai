@@ -32,6 +32,10 @@ htmlcov/
 # Frontend Tooling — generated CSS, not the source input.css
 app/static/css/output.css
 
+# Dev-fixture curriculum build
+content/dev-fixtures/
+content/curriculum.dev.json
+
 # Docker
 docker-compose.override.yml
 

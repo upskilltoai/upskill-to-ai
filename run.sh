@@ -12,6 +12,7 @@ usage() {
 Usage: ./run.sh <command>
 
   content   Build the curriculum artifact (uuids, then compile)
+  content-dev   Build content/curriculum.dev.json (local only, not shipped)
   uuids     Add uuids to any new phase, topic, objective, or step
   compile   Validate content and write content/curriculum.json
   schemas   Regenerate content/schemas/*.json from content_model.py
@@ -49,6 +50,11 @@ generate_schemas() {
 content() {
   uuids
   compile_curriculum
+}
+
+content_dev() {
+  uuids
+  uv run python scripts/compile_curriculum.py --dev-fixtures
 }
 
 run_tests() {
@@ -122,6 +128,7 @@ compose_logs() {
 
 case "${1:-}" in
   content)            content ;;
+  content-dev)        content_dev ;;
   uuids)              uuids ;;
   compile)            compile_curriculum ;;
   schemas)            generate_schemas ;;

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 
@@ -26,7 +28,11 @@ app = FastAPI(
 # without importing this module and risking a circular import. Still runs
 # at plain import time, before uvicorn ever starts accepting requests, so a
 # missing/malformed curriculum.json still fails loudly at startup.
-app.state.curriculum = load_curriculum()
+app.state.curriculum = (
+    load_curriculum(Path(settings.curriculum_json_path))
+    if settings.curriculum_json_path
+    else load_curriculum()
+)
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

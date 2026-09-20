@@ -55,7 +55,12 @@ def process_file(path: Path) -> int:
 
 
 def main() -> int:
-    files = sorted(CONTENT.glob("phases/*/*.yaml"))
+    # Both roots: the real pipeline (`phases/`) and the dev-only placeholder
+    # fixtures (`dev-fixtures/phases/`, see content/README.md) — a new
+    # placeholder phase needs uuids injected too, same as real content.
+    files = sorted(CONTENT.glob("phases/*/*.yaml")) + sorted(
+        CONTENT.glob("dev-fixtures/phases/*/*.yaml")
+    )
     if not files:
         print(f"No content found under {CONTENT}/phases", file=sys.stderr)
         return 1

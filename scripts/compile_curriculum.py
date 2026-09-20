@@ -39,6 +39,8 @@ from pydantic import BaseModel, ValidationError
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
 OUTPUT = CONTENT / "curriculum.json"
+DEV_FIXTURES = CONTENT / "dev-fixtures" / "phases"
+DEV_OUTPUT = CONTENT / "curriculum.dev.json"
 
 # content_model.py lives at the repo root, not inside scripts/ — running this
 # file directly (`python scripts/compile_curriculum.py`) only puts scripts/
@@ -175,6 +177,9 @@ def build_phase(phase_dir: Path) -> dict:
 
 
 def main() -> int:
+    dev_fixtures = "--dev-fixtures" in sys.argv[1:]
+    output = DEV_OUTPUT if dev_fixtures else OUTPUT
+
     try:
         meta = load_yaml(CONTENT / "curriculum.meta.yaml")
         version = meta["curriculum_version"]
@@ -182,6 +187,21 @@ def main() -> int:
         phase_dirs = sorted((CONTENT / "phases").glob("phase*"))
         if not phase_dirs:
             raise ContentError("No phases found under content/phases")
+
+        if dev_fixtures:
+            fixture_dirs = sorted(DEV_FIXTURES.glob("phase*"))
+            # A phase defined in both roots is very likely a mistake (e.g. a
+            # placeholder phase whose real content just landed in
+            # content/phases/ but wasn't removed from dev-fixtures/) —
+            # caught here rather than silently picking one.
+            collisions = {d.name for d in phase_dirs} & {d.name for d in fixture_dirs}
+            if collisions:
+                raise ContentError(
+                    f"Defined in both content/phases/ and content/dev-fixtures/phases/: "
+                    f"{', '.join(sorted(collisions))}. Remove the dev-fixtures copy — it's "
+                    "no longer a placeholder once real content exists."
+                )
+            phase_dirs += fixture_dirs
 
         phases = [build_phase(d) for d in phase_dirs]
         phases.sort(key=lambda p: p["order"])
@@ -195,7 +215,7 @@ def main() -> int:
             "generated_at": datetime.now(BUILD_TIMEZONE).isoformat(timespec="seconds"),
             "phases": phases,
         }
-        OUTPUT.write_text(
+        output.write_text(
             json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
         )
 
@@ -208,7 +228,7 @@ def main() -> int:
     topics = sum(len(p["topics"]) for p in phases)
     hours = sum(p["estimated_minutes"] for p in phases) / 60
 
-    print(f"✓ curriculum.json v{version}")
+    print(f"✓ {output.relative_to(ROOT)} v{version}")
     print(
         f"  {len(phases)} phase(s), {topics} topic(s), {objectives} objective(s), {steps} step(s)"
     )
