@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* daisyUI v5.7.42, vendored (not npm-installed — see learning-notes/frontend.md
+   for why) as the two plugin bundle files daisyUI itself publishes for the
+   Tailwind standalone CLI. Bump by re-running the two `curl` commands in
+   that note against a newer release tag and updating this comment. */
+@plugin "./daisyui.mjs";
+@plugin "./daisyui-theme.mjs" {
+  /* default themes only for now — revisit once real pages exist */
+}
+@source not "./daisyui{,*}.mjs";
