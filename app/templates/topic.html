@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic.name }} - Upskill to AI{% endblock %}
+
+{% block content %}
+<h2 class="text-3xl font-bold mb-2">{{ topic.name }}</h2>
+<p class="text-gray-600 mb-6">{{ topic.description }}</p>
+
+<h3 class="text-xl font-semibold mb-2">Objectives</h3>
+<ul class="list-disc list-inside mb-6 space-y-1">
+  {% for objective in topic.objectives %}
+  <li>{{ objective.text }}</li>
+  {% endfor %}
+</ul>
+
+<h3 class="text-xl font-semibold mb-2">Steps</h3>
+<ol class="list-decimal list-inside space-y-1">
+  {% for step in topic.steps %}
+  <li>{{ step.title }}</li>
+  {% endfor %}
+</ol>
+{% endblock %}

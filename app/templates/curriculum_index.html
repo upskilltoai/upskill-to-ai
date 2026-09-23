@@ -15,7 +15,7 @@
     <div class="px-6 pb-6">
       <ul class="list-disc list-inside space-y-1 mb-4">
         {% for topic in phase.topics %}
-        <li>{{ topic.name }}</li>
+        <li><a href="/curriculum/{{ phase.slug }}/{{ topic.slug }}" class="link link-hover">{{ topic.name }}</a></li>
         {% endfor %}
       </ul>
       <a href="/curriculum/{{ phase.slug }}" class="link link-primary">Open phase</a>

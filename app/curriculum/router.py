@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Request
 
-from app.curriculum.service import get_phase
+from app.curriculum.service import get_phase, get_topic
 from app.templates import templates
 
 router = APIRouter()
@@ -29,3 +29,14 @@ def phase_page(request: Request, phase_slug: str):
     if phase is None:
         raise HTTPException(status_code=404, detail=f"No phase '{phase_slug}'")
     return templates.TemplateResponse(request, "phase.html", {"phase": phase})
+
+
+@router.get("/curriculum/{phase_slug}/{topic_slug}")
+def topic_page(request: Request, phase_slug: str, topic_slug: str):
+    curriculum = request.app.state.curriculum
+    topic = get_topic(curriculum, phase_slug, topic_slug)
+    if topic is None:
+        raise HTTPException(
+            status_code=404, detail=f"No topic '{topic_slug}' in phase '{phase_slug}'"
+        )
+    return templates.TemplateResponse(request, "topic.html", {"topic": topic})

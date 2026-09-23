@@ -8,7 +8,7 @@
 
 <div class="grid gap-4">
   {% for topic in phase.topics %}
-  <div class="card bg-base-100 shadow-sm border border-base-300">
+  <a href="/curriculum/{{ phase.slug }}/{{ topic.slug }}" class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-md">
     <div class="card-body">
       <h3 class="card-title">
         {{ topic.name }}
@@ -16,7 +16,7 @@
       </h3>
       <p>{{ topic.description }}</p>
     </div>
-  </div>
+  </a>
   {% endfor %}
 </div>
 {% endblock %}
