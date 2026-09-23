@@ -1,7 +1,8 @@
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import settings
 from app.curriculum.loader import load_curriculum
@@ -37,6 +38,21 @@ app.state.curriculum = (
 app.add_middleware(SecurityHeadersMiddleware)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(curriculum_router)
+
+
+# Registered by status code rather than by exception class, so this covers
+# both kinds of 404 with one handler: the ones the curriculum routes raise
+# for an unknown slug, and the one Starlette raises for a URL that matches
+# no route at all. Lives here rather than in a feature folder because any
+# feature's routes can 404.
+#
+# `exc.detail` is deliberately not shown. It exists for logs, and echoing it
+# would reflect whatever slug the visitor typed back onto the page — Jinja
+# escapes it, so it isn't an injection risk, but a learner following a stale
+# link is better served by one clear sentence than by the internal message.
+@app.exception_handler(404)
+def not_found(request: Request, exc: StarletteHTTPException) -> Response:
+    return templates.TemplateResponse(request, "404.html", status_code=404)
 
 
 @app.get("/health")

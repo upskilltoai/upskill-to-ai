@@ -79,3 +79,13 @@ def test_optional_steps_are_tagged_and_others_are_not():
 def test_topic_page_404s_for_unknown_topic():
     response = client.get("/curriculum/phase1/no-such-topic")
     assert response.status_code == 404
+
+
+def test_404s_render_the_styled_page_not_json():
+    for path in ("/curriculum/phase99", "/curriculum/phase1/nope", "/no-such-route"):
+        response = client.get(path)
+        assert response.status_code == 404, path
+        assert "text/html" in response.headers["content-type"], path
+        assert "Not found" in response.text, path
+        # The internal detail message never reaches the page.
+        assert "phase99" not in response.text, path
