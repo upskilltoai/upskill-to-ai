@@ -1,4 +1,12 @@
 # Runs on every `git commit`. Install once with: uv run pre-commit install
+
+# Vendored third-party files are left exactly as upstream published them.
+# `trailing-whitespace` and `end-of-file-fixer` were silently rewriting the
+# daisyUI bundles, which defeats the only practical integrity check we have
+# (comparing our copy's sha256 against the upstream release) and risks real
+# corruption, since whitespace inside a JS template literal is significant.
+exclude: ^assets/css/daisyui.*\.mjs$
+
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.8

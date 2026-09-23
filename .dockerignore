@@ -31,4 +31,10 @@ learning-notes/
 # Generated fresh inside the build itself — never needed from the host
 app/static/css/output.css
 
+# Placeholder curriculum content and the artifact built from it. The
+# Dockerfile only copies content/curriculum.json, so these can't ship today —
+# these entries keep that true if that COPY is ever broadened.
+content/dev-fixtures/
+content/curriculum.dev.json
+
 .DS_Store

@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* daisyUI v5.7.42, vendored (not npm-installed — see learning-notes/frontend.md
+   for why) as the two plugin bundle files daisyUI itself publishes for the
+   Tailwind standalone CLI. Bump by re-running the two `curl` commands in
+   that note against a newer release tag and updating this comment.
+
+   These files are byte-identical to the upstream release, and must stay that
+   way — it's the only integrity check available without a package manager.
+   `.pre-commit-config.yaml` excludes them for exactly this reason.
+     daisyui.mjs        sha256 eb3ec02c7e911b077753de1f2eaa868e4bca5fe57278d5d917c54e0d026b769b
+     daisyui-theme.mjs  sha256 7dfeb9bc77bce72602028b147897fecbcf36aadaf22bf26233c94aacd4d0adab */
+@plugin "./daisyui.mjs";
+@plugin "./daisyui-theme.mjs" {
+  /* default themes only for now — revisit once real pages exist */
+}
+@source not "./daisyui{,*}.mjs";

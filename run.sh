@@ -90,11 +90,11 @@ dev() {
 }
 
 css_build() {
-  uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css
+  uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css
 }
 
 css_watch() {
-  uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch
+  uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css --watch
 }
 
 docker_build() {

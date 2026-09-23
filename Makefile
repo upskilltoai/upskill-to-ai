@@ -47,10 +47,10 @@ dev:  ## Run the app locally, reloading on code changes — visit http://localho
 	@uv run uvicorn app.main:app --reload --port 8000
 
 css:  ## Build the Tailwind CSS once
-	@uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css
+	@uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css
 
 css-watch:  ## Rebuild Tailwind CSS automatically as templates change — run alongside `make dev`
-	@uv run tailwindcss -i app/static/css/input.css -o app/static/css/output.css --watch
+	@uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css --watch
 
 docker-build:  ## Build the Docker image
 	@docker build -t upskill-to-ai .
