@@ -18,7 +18,10 @@
   {% for step in topic.steps %}
   <details class="card bg-base-100 shadow-sm border border-base-300">
     <summary class="card-body cursor-pointer">
-      <span class="badge badge-outline">{{ step.action | capitalize }}</span>
+      <div class="flex gap-2">
+        <span class="badge badge-outline">{{ step.action | capitalize }}</span>
+        {% if step.optional %}<span class="badge badge-outline">Optional</span>{% endif %}
+      </div>
       {% if step.resources and step.resources | length == 1 %}
       <a href="{{ step.resources[0].url }}" class="link link-hover font-semibold" target="_blank" rel="noopener noreferrer">{{ step.title }}</a>
       {% else %}

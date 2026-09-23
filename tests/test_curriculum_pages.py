@@ -69,6 +69,13 @@ def test_variant_tabs_show_their_own_description_and_phrased_link():
     assert "Look into OpenAI&#39;s tiktoken on GitHub" in response.text
 
 
+def test_optional_steps_are_tagged_and_others_are_not():
+    response = client.get("/curriculum/phase1/how-llms-work")
+    assert response.status_code == 200
+    # Two of this topic's nine steps are optional, the rest are not.
+    assert response.text.count(">Optional</span>") == 2
+
+
 def test_topic_page_404s_for_unknown_topic():
     response = client.get("/curriculum/phase1/no-such-topic")
     assert response.status_code == 404
