@@ -194,6 +194,11 @@
           "title": "Label",
           "type": "string"
         },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
         "resources": {
           "items": {
             "$ref": "#/$defs/Resource"
@@ -206,6 +211,7 @@
       "required": [
         "key",
         "label",
+        "description",
         "resources"
       ],
       "title": "Variant",

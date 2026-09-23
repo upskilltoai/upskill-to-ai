@@ -59,13 +59,19 @@ steps:
   variants:
   - key: anthropic
     label: Anthropic
+    description: >-
+      Explains what consumes the window, including how extended thinking and
+      tool definitions claim space alongside your prompt.
     resources:
-    - label: Context windows
+    - label: Read about context windows in Anthropic's docs
       url: https://platform.claude.com/docs/en/build-with-claude/context-windows
   - key: openai
     label: OpenAI
+    description: >-
+      Each model's reference page lists its context window and maximum output
+      tokens, so you can compare sizes across models directly.
     resources:
-    - label: Models
+    - label: Compare context windows on OpenAI's model reference
       url: https://platform.openai.com/docs/models
 
 - uuid: a2643422-af5f-4da8-bb80-3166e813c0ad
@@ -80,13 +86,19 @@ steps:
   variants:
   - key: anthropic
     label: Anthropic
+    description: >-
+      Anthropic exposes a token-counting endpoint, so you can measure a
+      prompt's exact size before spending anything sending it.
     resources:
-    - label: Token counting
+    - label: Read about token counting in Anthropic's docs
       url: https://platform.claude.com/docs/en/build-with-claude/token-counting
   - key: openai
     label: OpenAI
+    description: >-
+      tiktoken is the tokenizer OpenAI's models actually use, open-sourced —
+      run it locally to count tokens without making an API call at all.
     resources:
-    - label: tiktoken
+    - label: Look into OpenAI's tiktoken on GitHub
       url: https://github.com/openai/tiktoken
 
 - uuid: 265ec9a5-343c-4aff-8a50-945bcfbbc8a0

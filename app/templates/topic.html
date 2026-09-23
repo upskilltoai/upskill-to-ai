@@ -45,11 +45,10 @@
           {% if loop.first %}checked="checked"{% endif %}
         />
         <div class="tab-content bg-base-100 border-base-300 p-4">
-          <ul class="list-disc list-inside">
-            {% for resource in variant.resources %}
-            <li><a href="{{ resource.url }}" class="link link-primary" target="_blank" rel="noopener noreferrer">{{ resource.label or resource.url }}</a></li>
-            {% endfor %}
-          </ul>
+          <p class="text-gray-600 mb-2">{{ variant.description }}</p>
+          {% for resource in variant.resources %}
+          <p><a href="{{ resource.url }}" class="link link-primary" target="_blank" rel="noopener noreferrer">{{ resource.label or resource.url }}</a></p>
+          {% endfor %}
         </div>
         {% endfor %}
       </div>

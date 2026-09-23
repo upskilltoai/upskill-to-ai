@@ -33,13 +33,19 @@ steps:
   variants:
   - key: claude-code
     label: Claude Code
+    description: >-
+      What Claude Code is, where it runs, and what it is allowed to do to a
+      codebase once you point it at one.
     resources:
-    - label: Overview
+    - label: Read the Claude Code overview
       url: https://code.claude.com/docs/en/overview
   - key: codex
     label: Codex
+    description: >-
+      What Codex is, how to install it, and the first commands to run against
+      a repository.
     resources:
-    - label: Quickstart
+    - label: Work through the Codex quickstart
       url: https://developers.openai.com/codex/quickstart
 
 - uuid: dc7a204b-e0f8-4145-9048-fe8df965275e
@@ -53,17 +59,23 @@ steps:
   variants:
   - key: claude-code
     label: Claude Code
+    description: >-
+      A guided course that builds something real end to end, or a long-form
+      video walkthrough if you would rather watch someone work.
     resources:
-    - label: Claude Code in Action
+    - label: Take the Claude Code in Action course
       url: https://anthropic.skilljar.com/claude-code-in-action
       note: free official course
-    - label: freeCodeCamp — Claude Code for Beginners
+    - label: Watch freeCodeCamp's Claude Code walkthrough
       url: https://www.youtube.com/watch?v=gh2_PhgZGsM
       note: alternative, video
   - key: codex
     label: Codex
+    description: >-
+      OpenAI's task-oriented guides, covering a real piece of work from first
+      prompt through to a reviewed change.
     resources:
-    - label: Codex guides
+    - label: Work through OpenAI's Codex guides
       url: https://developers.openai.com/codex/
 
 - uuid: 5a93f727-0e76-4093-90ed-516623d88224

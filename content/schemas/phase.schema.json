@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://upskill-to-ai/schemas/phase.schema.json",
   "title": "Phase",
-  "description": "A competency cluster. The last topic of every phase is a capstone.",
+  "description": "The *authored* shape \u2014 `content/phases/phaseN/_phase.yaml`, exactly\nwhat a human writes. `topics` is a plain list of slugs; the compiler\nreplaces this with full `Topic` objects when building the artifact\n(see `CompiledPhase`), and adds `estimated_minutes` (summed from\nthose topics) \u2014 neither of which a phase file ever contains itself.",
   "$defs": {
     "HandsOnVerification": {
       "additionalProperties": false,
@@ -60,15 +60,6 @@
       "title": "Order",
       "type": "integer"
     },
-    "topics": {
-      "items": {
-        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
-        "type": "string"
-      },
-      "minItems": 1,
-      "title": "Topics",
-      "type": "array"
-    },
     "hands_on_verification": {
       "anyOf": [
         {
@@ -79,6 +70,15 @@
         }
       ],
       "default": null
+    },
+    "topics": {
+      "items": {
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Topics",
+      "type": "array"
     }
   },
   "required": [

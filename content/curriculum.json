@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-17T23:34:01-04:00",
+  "generated_at": "2026-09-22T23:28:10-04:00",
   "phases": [
     {
       "uuid": "605911ce-e296-43a3-ae04-0e97a75dbd19",
@@ -213,9 +213,10 @@
                 {
                   "key": "anthropic",
                   "label": "Anthropic",
+                  "description": "Covers authentication, the shape of a Messages API request, and what the response object contains.",
                   "resources": [
                     {
-                      "label": "Get started with Claude",
+                      "label": "Read Anthropic's Get Started guide",
                       "url": "https://platform.claude.com/docs/en/get-started"
                     }
                   ]
@@ -223,9 +224,10 @@
                 {
                   "key": "openai",
                   "label": "OpenAI",
+                  "description": "Covers authentication, the shape of a Responses API request, and what the response object contains.",
                   "resources": [
                     {
-                      "label": "Text generation",
+                      "label": "Read OpenAI's text generation guide",
                       "url": "https://platform.openai.com/docs/guides/text"
                     }
                   ]
@@ -320,9 +322,10 @@
                 {
                   "key": "anthropic",
                   "label": "Anthropic",
+                  "description": "Explains what consumes the window, including how extended thinking and tool definitions claim space alongside your prompt.",
                   "resources": [
                     {
-                      "label": "Context windows",
+                      "label": "Read about context windows in Anthropic's docs",
                       "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
                     }
                   ]
@@ -330,9 +333,10 @@
                 {
                   "key": "openai",
                   "label": "OpenAI",
+                  "description": "Each model's reference page lists its context window and maximum output tokens, so you can compare sizes across models directly.",
                   "resources": [
                     {
-                      "label": "Models",
+                      "label": "Compare context windows on OpenAI's model reference",
                       "url": "https://platform.openai.com/docs/models"
                     }
                   ]
@@ -351,9 +355,10 @@
                 {
                   "key": "anthropic",
                   "label": "Anthropic",
+                  "description": "Anthropic exposes a token-counting endpoint, so you can measure a prompt's exact size before spending anything sending it.",
                   "resources": [
                     {
-                      "label": "Token counting",
+                      "label": "Read about token counting in Anthropic's docs",
                       "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting"
                     }
                   ]
@@ -361,9 +366,10 @@
                 {
                   "key": "openai",
                   "label": "OpenAI",
+                  "description": "tiktoken is the tokenizer OpenAI's models actually use, open-sourced — run it locally to count tokens without making an API call at all.",
                   "resources": [
                     {
-                      "label": "tiktoken",
+                      "label": "Look into OpenAI's tiktoken on GitHub",
                       "url": "https://github.com/openai/tiktoken"
                     }
                   ]
@@ -747,9 +753,10 @@
                 {
                   "key": "anthropic",
                   "label": "Anthropic",
+                  "description": "Per-model rates for input, output, and cached input — note how far apart the input and output prices sit.",
                   "resources": [
                     {
-                      "label": "Pricing",
+                      "label": "Check Anthropic's pricing page",
                       "url": "https://platform.claude.com/docs/en/about-claude/pricing"
                     }
                   ]
@@ -757,9 +764,10 @@
                 {
                   "key": "openai",
                   "label": "OpenAI",
+                  "description": "Per-model rates for input, output, and cached input — note how far apart the input and output prices sit.",
                   "resources": [
                     {
-                      "label": "Pricing",
+                      "label": "Check OpenAI's pricing page",
                       "url": "https://platform.openai.com/docs/pricing"
                     }
                   ]
@@ -796,9 +804,10 @@
                 {
                   "key": "anthropic",
                   "label": "Anthropic",
+                  "description": "How a thinking budget steers extended reasoning, and how those unseen tokens land on the bill.",
                   "resources": [
                     {
-                      "label": "Steering thinking",
+                      "label": "Read about steering thinking and its cost",
                       "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost"
                     }
                   ]
@@ -806,9 +815,10 @@
                 {
                   "key": "openai",
                   "label": "OpenAI",
+                  "description": "How the reasoning effort setting works, and why reasoning tokens are billed even though they never appear in the output.",
                   "resources": [
                     {
-                      "label": "Reasoning",
+                      "label": "Read OpenAI's reasoning guide",
                       "url": "https://platform.openai.com/docs/guides/reasoning"
                     }
                   ]
@@ -875,9 +885,10 @@
                 {
                   "key": "claude-code",
                   "label": "Claude Code",
+                  "description": "What Claude Code is, where it runs, and what it is allowed to do to a codebase once you point it at one.",
                   "resources": [
                     {
-                      "label": "Overview",
+                      "label": "Read the Claude Code overview",
                       "url": "https://code.claude.com/docs/en/overview"
                     }
                   ]
@@ -885,9 +896,10 @@
                 {
                   "key": "codex",
                   "label": "Codex",
+                  "description": "What Codex is, how to install it, and the first commands to run against a repository.",
                   "resources": [
                     {
-                      "label": "Quickstart",
+                      "label": "Work through the Codex quickstart",
                       "url": "https://developers.openai.com/codex/quickstart"
                     }
                   ]
@@ -906,14 +918,15 @@
                 {
                   "key": "claude-code",
                   "label": "Claude Code",
+                  "description": "A guided course that builds something real end to end, or a long-form video walkthrough if you would rather watch someone work.",
                   "resources": [
                     {
-                      "label": "Claude Code in Action",
+                      "label": "Take the Claude Code in Action course",
                       "url": "https://anthropic.skilljar.com/claude-code-in-action",
                       "note": "free official course"
                     },
                     {
-                      "label": "freeCodeCamp — Claude Code for Beginners",
+                      "label": "Watch freeCodeCamp's Claude Code walkthrough",
                       "url": "https://www.youtube.com/watch?v=gh2_PhgZGsM",
                       "note": "alternative, video"
                     }
@@ -922,9 +935,10 @@
                 {
                   "key": "codex",
                   "label": "Codex",
+                  "description": "OpenAI's task-oriented guides, covering a real piece of work from first prompt through to a reviewed change.",
                   "resources": [
                     {
-                      "label": "Codex guides",
+                      "label": "Work through OpenAI's Codex guides",
                       "url": "https://developers.openai.com/codex/"
                     }
                   ]

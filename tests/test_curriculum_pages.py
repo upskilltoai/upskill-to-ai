@@ -60,6 +60,15 @@ def test_topic_page_renders_variant_steps():
     assert 'href="https://platform.openai.com/docs/guides/text"' in response.text
 
 
+def test_variant_tabs_show_their_own_description_and_phrased_link():
+    response = client.get("/curriculum/phase1/tokens-and-context")
+    assert response.status_code == 200
+    # Each variant explains its own resource rather than sharing the step's.
+    assert "tiktoken is the tokenizer OpenAI&#39;s models actually use" in response.text
+    # The link text is a full phrase, not a bare page title.
+    assert "Look into OpenAI&#39;s tiktoken on GitHub" in response.text
+
+
 def test_topic_page_404s_for_unknown_topic():
     response = client.get("/curriculum/phase1/no-such-topic")
     assert response.status_code == 404

@@ -85,16 +85,26 @@ Use `variants` when each provider documents the same concept and a learner needs
   variant_dimension: provider     # provider | coding_tool
   variants:
     - key: anthropic              # listed first = default tab
-      label: Anthropic
+      label: Anthropic            # the tab's own label
+      description: >-             # required — what *this* resource covers
+        Per-model rates for input, output, and cached input.
       resources:
-        - label: Pricing
+        - label: Check Anthropic's pricing page   # a full phrase, not a bare title
           url: https://platform.claude.com/docs/en/about-claude/pricing
     - key: openai
       label: OpenAI
+      description: >-
+        Per-model rates for input, output, and cached input.
       resources:
-        - label: Pricing
+        - label: Check OpenAI's pricing page
           url: https://platform.openai.com/docs/pricing
 ```
+
+Each variant needs its own `description` — the tab shows only that text and its
+links, so without it the tab cannot say what makes this provider's resource
+different from the next tab's. Write resource labels as full phrases ("Look
+into OpenAI's tiktoken on GitHub"), not bare page titles ("tiktoken") — the
+whole phrase becomes the link.
 
 **`resources` or `variants`, never both.** The test: *would reading all of them teach more than reading one?* Yes → `resources`. No → `variants`.
 

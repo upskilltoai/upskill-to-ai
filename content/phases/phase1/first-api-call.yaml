@@ -41,13 +41,19 @@ steps:
   variants:
   - key: anthropic
     label: Anthropic
+    description: >-
+      Covers authentication, the shape of a Messages API request, and what the
+      response object contains.
     resources:
-    - label: Get started with Claude
+    - label: Read Anthropic's Get Started guide
       url: https://platform.claude.com/docs/en/get-started
   - key: openai
     label: OpenAI
+    description: >-
+      Covers authentication, the shape of a Responses API request, and what the
+      response object contains.
     resources:
-    - label: Text generation
+    - label: Read OpenAI's text generation guide
       url: https://platform.openai.com/docs/guides/text
 
 - uuid: da10aad4-c6e3-426b-bf5b-28e6a94e4878

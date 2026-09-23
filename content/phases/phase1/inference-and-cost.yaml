@@ -62,13 +62,19 @@ steps:
   variants:
   - key: anthropic
     label: Anthropic
+    description: >-
+      Per-model rates for input, output, and cached input — note how far apart
+      the input and output prices sit.
     resources:
-    - label: Pricing
+    - label: Check Anthropic's pricing page
       url: https://platform.claude.com/docs/en/about-claude/pricing
   - key: openai
     label: OpenAI
+    description: >-
+      Per-model rates for input, output, and cached input — note how far apart
+      the input and output prices sit.
     resources:
-    - label: Pricing
+    - label: Check OpenAI's pricing page
       url: https://platform.openai.com/docs/pricing
 
 - uuid: 0b1d728f-6b8a-4fa0-9cbb-725d1099a79e
@@ -97,13 +103,19 @@ steps:
   variants:
   - key: anthropic
     label: Anthropic
+    description: >-
+      How a thinking budget steers extended reasoning, and how those unseen
+      tokens land on the bill.
     resources:
-    - label: Steering thinking
+    - label: Read about steering thinking and its cost
       url: https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost
   - key: openai
     label: OpenAI
+    description: >-
+      How the reasoning effort setting works, and why reasoning tokens are
+      billed even though they never appear in the output.
     resources:
-    - label: Reasoning
+    - label: Read OpenAI's reasoning guide
       url: https://platform.openai.com/docs/guides/reasoning
 
 - uuid: bd49c84f-834d-4dd4-8c96-3411a2de07c9

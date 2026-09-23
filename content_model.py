@@ -55,6 +55,10 @@ class Variant(BaseModel):
 
     key: Slug
     label: str = Field(min_length=1)
+    # Required, not optional: a variant tab shows only this text and its
+    # links, so without it the tab can't explain what makes this provider's
+    # take different from the one in the next tab.
+    description: str = Field(min_length=1)
     resources: list[Resource] = Field(min_length=1)
 
 
