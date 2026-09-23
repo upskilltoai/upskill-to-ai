@@ -7,15 +7,20 @@
 
 <div class="grid gap-4">
   {% for phase in phases %}
-  <div class="card bg-base-100 shadow-sm border border-base-300">
-    <div class="card-body">
+  <details class="card bg-base-100 shadow-sm border border-base-300">
+    <summary class="card-body cursor-pointer">
       <h3 class="card-title">{{ phase.name }}</h3>
       <p>{{ phase.short_description }}</p>
-      <div class="badge badge-outline">
-        {{ (phase.estimated_minutes / 60) | round(1) }}h
-      </div>
+    </summary>
+    <div class="px-6 pb-6">
+      <ul class="list-disc list-inside space-y-1 mb-4">
+        {% for topic in phase.topics %}
+        <li>{{ topic.name }}</li>
+        {% endfor %}
+      </ul>
+      <a href="/curriculum/{{ phase.slug }}" class="link link-primary">Open phase</a>
     </div>
-  </div>
+  </details>
   {% endfor %}
 </div>
 {% endblock %}

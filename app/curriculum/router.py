@@ -6,8 +6,9 @@ for the lookups they call, and `app/curriculum/loader.py` for how
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 
+from app.curriculum.service import get_phase
 from app.templates import templates
 
 router = APIRouter()
@@ -19,3 +20,12 @@ def curriculum_index(request: Request):
     return templates.TemplateResponse(
         request, "curriculum_index.html", {"phases": curriculum.phases}
     )
+
+
+@router.get("/curriculum/{phase_slug}")
+def phase_page(request: Request, phase_slug: str):
+    curriculum = request.app.state.curriculum
+    phase = get_phase(curriculum, phase_slug)
+    if phase is None:
+        raise HTTPException(status_code=404, detail=f"No phase '{phase_slug}'")
+    return templates.TemplateResponse(request, "phase.html", {"phase": phase})
