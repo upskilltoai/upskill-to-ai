@@ -14,9 +14,42 @@
 </ul>
 
 <h3 class="text-xl font-semibold mb-2">Steps</h3>
-<ol class="list-decimal list-inside space-y-1">
+<div class="grid gap-4">
   {% for step in topic.steps %}
-  <li>{{ step.title }}</li>
+  <details class="card bg-base-100 shadow-sm border border-base-300">
+    <summary class="card-body cursor-pointer">
+      <span class="badge badge-outline">{{ step.action | capitalize }}</span>
+      {% if step.resources and step.resources | length == 1 %}
+      <a href="{{ step.resources[0].url }}" class="link link-hover font-semibold" target="_blank" rel="noopener noreferrer">{{ step.title }}</a>
+      {% else %}
+      <strong>{{ step.title }}</strong>
+      {% endif %}
+    </summary>
+    <div class="px-6 pb-6">
+      <p class="text-gray-600 mb-2">{{ step.description }}</p>
+
+      {% if step.resources and step.resources | length > 1 %}
+      <ul class="list-disc list-inside">
+        {% for resource in step.resources %}
+        <li><a href="{{ resource.url }}" class="link link-primary" target="_blank" rel="noopener noreferrer">{{ resource.label or resource.url }}</a></li>
+        {% endfor %}
+      </ul>
+      {% elif step.variants %}
+      <div class="space-y-2">
+        {% for variant in step.variants %}
+        <div>
+          <p class="font-medium">{{ variant.label }}</p>
+          <ul class="list-disc list-inside">
+            {% for resource in variant.resources %}
+            <li><a href="{{ resource.url }}" class="link link-primary" target="_blank" rel="noopener noreferrer">{{ resource.label or resource.url }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </details>
   {% endfor %}
-</ol>
+</div>
 {% endblock %}
