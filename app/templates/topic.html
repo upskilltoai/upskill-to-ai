@@ -35,10 +35,16 @@
         {% endfor %}
       </ul>
       {% elif step.variants %}
-      <div class="space-y-2">
+      <div class="tabs tabs-box">
         {% for variant in step.variants %}
-        <div>
-          <p class="font-medium">{{ variant.label }}</p>
+        <input
+          type="radio"
+          name="variant-{{ step.uuid }}"
+          class="tab"
+          aria-label="{{ variant.label }}"
+          {% if loop.first %}checked="checked"{% endif %}
+        />
+        <div class="tab-content bg-base-100 border-base-300 p-4">
           <ul class="list-disc list-inside">
             {% for resource in variant.resources %}
             <li><a href="{{ resource.url }}" class="link link-primary" target="_blank" rel="noopener noreferrer">{{ resource.label or resource.url }}</a></li>
