@@ -15,6 +15,9 @@ Usage: ./run.sh <command>
   content-dev   Build content/curriculum.dev.json (local only, not shipped)
   uuids     Add uuids to any new phase, topic, objective, or step
   compile   Validate content and write content/curriculum.json
+  migrate   Apply every pending migration
+  migration Create a migration from model changes — ./run.sh migration "what changed"
+  migrate-status  Show which migration the database is currently on
   schemas   Regenerate content/schemas/*.json from content_model.py
   test      Run the app's test suite
   lint      Lint (including security rules)
@@ -41,6 +44,22 @@ uuids() {
 
 compile_curriculum() {
   uv run python scripts/compile_curriculum.py
+}
+
+migrate() {
+  uv run alembic upgrade head
+}
+
+migration() {
+  if [ -z "${1:-}" ]; then
+    echo 'Usage: ./run.sh migration "what changed"' >&2
+    exit 1
+  fi
+  uv run alembic revision --autogenerate -m "$1"
+}
+
+migrate_status() {
+  uv run alembic current
 }
 
 generate_schemas() {
@@ -131,6 +150,9 @@ case "${1:-}" in
   content-dev)        content_dev ;;
   uuids)              uuids ;;
   compile)            compile_curriculum ;;
+  migrate)            migrate ;;
+  migration)          migration "${2:-}" ;;
+  migrate-status)     migrate_status ;;
   schemas)            generate_schemas ;;
   test)               run_tests ;;
   lint)               lint ;;

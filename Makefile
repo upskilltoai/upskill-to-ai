@@ -5,7 +5,7 @@
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content content-dev uuids compile schemas test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
+.PHONY: help content content-dev uuids compile migrate migration migrate-status schemas test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
 
 help:  ## Show available commands
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -21,6 +21,16 @@ compile:  ## Validate content and write content/curriculum.json
 
 content-dev: uuids  ## Build content/curriculum.dev.json (local only, not shipped)
 	@uv run python scripts/compile_curriculum.py --dev-fixtures
+
+migrate:  ## Apply every pending migration
+	@uv run alembic upgrade head
+
+migration:  ## Create a migration from model changes — make migration m="add user table"
+	@test -n "$(m)" || (echo 'Usage: make migration m="what changed"' && exit 1)
+	@uv run alembic revision --autogenerate -m "$(m)"
+
+migrate-status:  ## Show which migration the database is currently on
+	@uv run alembic current
 
 schemas:  ## Regenerate content/schemas/*.json from content_model.py — run after editing that file
 	@uv run python scripts/generate_schemas.py

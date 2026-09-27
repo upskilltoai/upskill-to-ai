@@ -41,6 +41,14 @@ COPY content_model.py ./content_model.py
 # placeholder content that must never reach a real deployment.
 COPY content/curriculum.json ./content/curriculum.json
 
+# Migrations ship with the image so a deployment can run
+# `alembic upgrade head` as a one-off job using this exact image, rather than
+# needing a separate checkout with matching dependencies. The web process
+# never runs them — see the Stage C rule that migrations are always an
+# explicit command, never automatic at startup.
+COPY alembic.ini ./alembic.ini
+COPY migrations ./migrations
+
 COPY --from=build /app/app/static/css/output.css ./app/static/css/output.css
 
 # Run as an unprivileged user. Containers default to root, which means any

@@ -10,8 +10,23 @@ from __future__ import annotations
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
+
+
+class Base(DeclarativeBase):
+    """The shared declarative base every model inherits from.
+
+    Its `.metadata` is the single registry of every table in the app, which
+    is what Alembic compares against the live database to work out what a
+    migration needs to change. Models live in their own feature folders
+    (`app/auth/`, `app/progress/`), so this has to sit somewhere common —
+    and each model module must be imported before autogenerate runs, or its
+    table is absent from the registry and Alembic cheerfully generates a
+    migration that drops it. `migrations/env.py` does that importing.
+    """
+
 
 # Creating the engine opens no connection — it builds a pool that connects
 # lazily, on first use. Importing this module therefore stays cheap and does
