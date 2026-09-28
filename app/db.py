@@ -9,10 +9,24 @@ from __future__ import annotations
 
 from collections.abc import AsyncGenerator
 
+from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
+
+# Every constraint and index gets a predictable name from these patterns,
+# instead of whatever Postgres invents. A later migration that drops or alters
+# a constraint has to name it exactly — with invented names, that means looking
+# it up, and the invented name can differ between databases, so a migration
+# that works locally can fail on the server.
+NAMING_CONVENTION = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
 
 
 class Base(DeclarativeBase):
@@ -26,6 +40,18 @@ class Base(DeclarativeBase):
     table is absent from the registry and Alembic cheerfully generates a
     migration that drops it. `migrations/env.py` does that importing.
     """
+
+    metadata = MetaData(naming_convention=NAMING_CONVENTION)
+
+    # Columns the *database* fills in (`server_default=func.now()`,
+    # `onupdate=func.now()`) are unknown to SQLAlchemy until it asks. It asks
+    # automatically after an INSERT, but not after an UPDATE — it just marks
+    # the value unknown, so the next plain `obj.updated_at` read goes to the
+    # database. In async code that's forbidden and raises `MissingGreenlet`.
+    # This makes it fetch those values back in the same round trip on UPDATE
+    # too, so they're never left unknown. Inherited by every model; a model
+    # that sets its own `__mapper_args__` must repeat it.
+    __mapper_args__ = {"eager_defaults": True}
 
 
 # Creating the engine opens no connection — it builds a pool that connects

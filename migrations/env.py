@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
+import app.auth.models  # noqa: F401  (registers User on Base.metadata)
 from app.config import settings
 from app.db import Base
 
@@ -25,8 +26,9 @@ if config.config_file_name is not None:
 # absent from the registry, so Alembic concludes it was deleted and writes a
 # migration that drops it.
 #
-# Model modules (import each one as it's added):
-#   (none yet — app/auth/models.py and app/progress/models.py come next)
+# Model modules are imported at the top of this file — add one import per new
+# models module. The `noqa: F401` stops the linter deleting an import that
+# looks unused but exists purely for this side effect.
 target_metadata = Base.metadata
 
 
