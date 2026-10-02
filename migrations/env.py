@@ -7,6 +7,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 import app.auth.models  # noqa: F401  (registers User on Base.metadata)
+import app.progress.models  # noqa: F401  (registers StepCompletion)
 from app.config import settings
 from app.db import Base
 
