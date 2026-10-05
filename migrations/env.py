@@ -33,6 +33,17 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
+def database_url() -> str:
+    """Which database to migrate.
+
+    Normally `app.config.settings`. The test suite passes the throwaway test
+    database in through `config.attributes` instead — Alembic's own channel
+    for a caller to hand values to env.py — because by the time tests run,
+    `settings` has already been built from the development configuration.
+    """
+    return config.attributes.get("database_url") or settings.database_url
+
+
 def engine_config() -> dict[str, str]:
     """The engine settings from alembic.ini, with our real database URL.
 
@@ -44,7 +55,7 @@ def engine_config() -> dict[str, str]:
     and either fail or silently mangle the URL.
     """
     section = config.get_section(config.config_ini_section, {})
-    section["sqlalchemy.url"] = settings.database_url
+    section["sqlalchemy.url"] = database_url()
     return section
 
 
@@ -61,7 +72,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=settings.database_url,
+        url=database_url(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
