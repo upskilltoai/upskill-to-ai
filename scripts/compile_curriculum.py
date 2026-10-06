@@ -176,6 +176,38 @@ def build_phase(phase_dir: Path) -> dict:
     return phase
 
 
+def write_artifact(output: Path, version: int, phases: list[dict]) -> bool:
+    """Write the artifact, unless only its timestamp would change.
+
+    `generated_at` records when the *content* last changed. Stamping the
+    current time on every build would change the file on every `make check`
+    even when no YAML did — a meaningless diff to commit or discard each
+    time. So the new artifact is first rendered with the existing file's
+    timestamp: if that is byte-identical to what's on disk, nothing changed
+    and nothing is written. Comparing the whole rendered text, rather than
+    picking fields, means any real change — content, `curriculum_version`,
+    even output formatting — still produces a fresh file. Returns whether
+    the file was written.
+    """
+
+    def render(generated_at: str) -> str:
+        artifact = {"version": version, "generated_at": generated_at, "phases": phases}
+        return json.dumps(artifact, indent=2, ensure_ascii=False) + "\n"
+
+    if output.exists():
+        existing = output.read_text(encoding="utf-8")
+        try:
+            previous = json.loads(existing)["generated_at"]
+        except (json.JSONDecodeError, KeyError, TypeError):
+            previous = None  # unreadable or a different shape: just rewrite it
+        if previous is not None and render(previous) == existing:
+            return False
+
+    now = datetime.now(BUILD_TIMEZONE).isoformat(timespec="seconds")
+    output.write_text(render(now), encoding="utf-8")
+    return True
+
+
 def main() -> int:
     dev_fixtures = "--dev-fixtures" in sys.argv[1:]
     output = DEV_OUTPUT if dev_fixtures else OUTPUT
@@ -210,14 +242,7 @@ def main() -> int:
         for phase in phases:
             collect_uuids(phase, seen, phase["slug"])
 
-        artifact = {
-            "version": version,
-            "generated_at": datetime.now(BUILD_TIMEZONE).isoformat(timespec="seconds"),
-            "phases": phases,
-        }
-        output.write_text(
-            json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        written = write_artifact(output, version, phases)
 
     except ContentError as error:
         print(f"\n✗ {error}\n", file=sys.stderr)
@@ -228,7 +253,8 @@ def main() -> int:
     topics = sum(len(p["topics"]) for p in phases)
     hours = sum(p["estimated_minutes"] for p in phases) / 60
 
-    print(f"✓ {output.relative_to(ROOT)} v{version}")
+    status = "" if written else " (unchanged)"
+    print(f"✓ {output.relative_to(ROOT)} v{version}{status}")
     print(
         f"  {len(phases)} phase(s), {topics} topic(s), {objectives} objective(s), {steps} step(s)"
     )
