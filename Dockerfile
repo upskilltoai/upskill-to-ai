@@ -24,6 +24,11 @@ COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /uvx /bin/
 
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
+# Compile dependencies to bytecode now, at build time. The app user can't
+# write under /app (see the end of this file), so Python couldn't cache
+# compiled files at runtime — without this, every container start would
+# recompile all of FastAPI, Pydantic and SQLAlchemy in memory.
+ENV UV_COMPILE_BYTECODE=1
 RUN uv sync --frozen --no-dev
 
 COPY app ./app
@@ -54,7 +59,11 @@ COPY --from=build /app/app/static/css/output.css ./app/static/css/output.css
 # Run as an unprivileged user. Containers default to root, which means any
 # code-execution bug in the app would run as root inside the container —
 # a much larger blast radius for no benefit, since nothing here needs root.
-RUN useradd --create-home --uid 1000 appuser && chown -R appuser:appuser /app
+# Everything under /app stays owned by root, so appuser can read and run the
+# code but not change it: a code-execution bug can't rewrite the app, its
+# dependencies, or the migrations shipped alongside it. Nothing the app does
+# at runtime writes to disk — logs go to stdout.
+RUN useradd --create-home --uid 1000 appuser
 USER appuser
 
 ENV PATH="/app/.venv/bin:$PATH"

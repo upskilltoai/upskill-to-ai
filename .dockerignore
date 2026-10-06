@@ -1,7 +1,10 @@
 .venv/
 .git/
-__pycache__/
-*.pyc
+# `**/` because .dockerignore patterns are anchored to the context root:
+# plain `__pycache__/` only matched a top-level one, so `app/__pycache__/`
+# (compiled by a different Python on the host) was being copied into the image.
+**/__pycache__/
+**/*.pyc
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
