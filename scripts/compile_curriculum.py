@@ -198,7 +198,7 @@ def write_artifact(output: Path, version: int, phases: list[dict]) -> bool:
         existing = output.read_text(encoding="utf-8")
         try:
             previous = json.loads(existing)["generated_at"]
-        except (json.JSONDecodeError, KeyError, TypeError):
+        except json.JSONDecodeError, KeyError, TypeError:
             previous = None  # unreadable or a different shape: just rewrite it
         if previous is not None and render(previous) == existing:
             return False

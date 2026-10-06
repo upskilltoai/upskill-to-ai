@@ -67,7 +67,7 @@ engine = create_async_engine(settings.database_url)
 session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
 
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_session() -> AsyncGenerator[AsyncSession]:
     """One session per request, closed when the request ends.
 
     Used as a FastAPI dependency: a route takes

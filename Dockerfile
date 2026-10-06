@@ -1,7 +1,7 @@
-# Base image pinned by digest, not just the `python:3.12-slim` tag: a tag moves,
+# Base image pinned by digest, not just the `python:3.14-slim` tag: a tag moves,
 # so two builds months apart could otherwise silently sit on different base
 # layers. Update deliberately, by replacing the digest.
-FROM python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea AS build
+FROM python:3.14-slim@sha256:c3e521df8b2b498a7a682e7e18676771cb80c6b75b8699af886b2d554ce40151 AS build
 
 COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /uvx /bin/
 
@@ -18,7 +18,7 @@ COPY assets ./assets
 RUN uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css --minify
 
 # ---- Runtime stage: only what's needed to actually run ----
-FROM python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea AS runtime
+FROM python:3.14-slim@sha256:c3e521df8b2b498a7a682e7e18676771cb80c6b75b8699af886b2d554ce40151 AS runtime
 
 COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /uvx /bin/
 
