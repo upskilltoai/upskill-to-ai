@@ -9,6 +9,28 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 
+# Pin the Tailwind release instead of downloading "latest" on every build, so
+# the image's CSS is built by the same version as local `make css`. Keep in
+# step with TAILWINDCSS_VERSION in the Makefile.
+ENV TAILWINDCSS_VERSION=v4.3.3
+
+# Download Tailwind, then check it against the checksum Tailwind published for
+# that release *before it is ever run* — the program comes straight from
+# GitHub, and this is what proves it's the genuine file. A mismatch fails the
+# build. pytailwindcss picks the file by CPU type (`uname -m`), so the expected
+# checksum is picked the same way. Done before the app is copied in, so this
+# layer is cached and only re-downloads when the version changes.
+# Bumping the version: replace both checksums with the `tailwindcss-linux-x64`
+# and `tailwindcss-linux-arm64` lines from that release's sha256sums.txt.
+RUN uv run python -c "import os, pytailwindcss; pytailwindcss.install(os.environ['TAILWINDCSS_VERSION'])" \
+ && case "$(uname -m)" in \
+      x86_64)  expected=dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a ;; \
+      aarch64) expected=55fd0b241214eff3de1e8ee4f22796662f2d2e7a49bcfca7477cfd0bac398195 ;; \
+      *) echo "No Tailwind checksum recorded for $(uname -m)" >&2; exit 1 ;; \
+    esac \
+ && binary="$(uv run python -c "import os; from pytailwindcss.utils import get_bin_path; print(get_bin_path(os.environ['TAILWINDCSS_VERSION']))")" \
+ && echo "$expected  $binary" | sha256sum -c -
+
 # `assets/` holds the CSS build *inputs* (input.css and the vendored daisyUI
 # plugin files). They're needed here to generate output.css, and deliberately
 # never copied into the runtime stage below — they'd be dead weight in the

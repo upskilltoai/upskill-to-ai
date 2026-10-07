@@ -1,17 +1,52 @@
 # Project commands. Run `make` on its own to see what is available.
 #
+# Every command has a `## description` on its target line, and `##@ Name`
+# lines start a group — `make help` builds its listing from those, so a new
+# command shows up in the help automatically. Add it under the right group.
+#
 # Note for editing: recipe lines (the indented ones) must start with a real
 # TAB character, not spaces. Make is strict about this and the error message
 # it gives is unhelpful.
 
 .DEFAULT_GOAL := help
-.PHONY: help content content-dev uuids compile migrate migration migrate-status schemas test check dev css css-watch docker-build docker-run docker-stop docker-logs compose-up compose-down compose-logs lint format typecheck audit
+.PHONY: help dev css css-watch content content-dev uuids compile schemas \
+	db db-shell migrate migration migrate-status \
+	check test lint format typecheck audit \
+	docker-build compose-up compose-down compose-logs
+
+CSS_IN  := assets/css/input.css
+CSS_OUT := app/static/css/output.css
+IMAGE   := upskill-to-ai
+
+# Which Tailwind release `pytailwindcss` downloads and runs. Unset, it fetches
+# whatever is "latest" — once per machine, then reuses it forever — so a laptop
+# and a fresh Docker build could quietly compile the CSS with different
+# versions. `export` hands it to every command below. Keep in step with the
+# same pin in the Dockerfile; bump both together, deliberately.
+export TAILWINDCSS_VERSION := v4.3.3
 
 help:  ## Show available commands
-	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
+	@awk 'BEGIN {FS = ":.*## "} \
+		/^##@/ {printf "\n\033[1m%s\033[0m\n", substr($$0, 5)} \
+		/^[a-z-]+:.*## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+##@ Run
+
+dev:  ## Run the app locally, reloading on code changes — visit http://localhost:8000
+	@uv run uvicorn app.main:app --reload --port 8000
+
+css:  ## Build the Tailwind CSS once
+	@uv run tailwindcss -i $(CSS_IN) -o $(CSS_OUT)
+
+css-watch:  ## Rebuild the CSS as templates change — run alongside `make dev`
+	@uv run tailwindcss -i $(CSS_IN) -o $(CSS_OUT) --watch
+
+##@ Content
 
 content: uuids compile  ## Build the curriculum artifact (uuids, then compile)
+
+content-dev: uuids  ## Build content/curriculum.dev.json with placeholder phases (local only, not shipped)
+	@uv run python scripts/compile_curriculum.py --dev-fixtures
 
 uuids:  ## Add uuids to any new phase, topic, objective, or step
 	@uv run python scripts/inject_uuids.py
@@ -19,8 +54,16 @@ uuids:  ## Add uuids to any new phase, topic, objective, or step
 compile:  ## Validate content and write content/curriculum.json
 	@uv run python scripts/compile_curriculum.py
 
-content-dev: uuids  ## Build content/curriculum.dev.json (local only, not shipped)
-	@uv run python scripts/compile_curriculum.py --dev-fixtures
+schemas:  ## Regenerate content/schemas/*.json — run after editing content_model.py
+	@uv run python scripts/generate_schemas.py
+
+##@ Database
+
+db:  ## Start the local Postgres (needed by migrations and the database tests)
+	@docker compose up -d db
+
+db-shell:  ## Open psql on the local development database
+	@docker compose exec db psql -U upskill -d upskill
 
 migrate:  ## Apply every pending migration
 	@uv run alembic upgrade head
@@ -32,14 +75,16 @@ migration:  ## Create a migration from model changes — make migration m="add u
 migrate-status:  ## Show which migration the database is currently on
 	@uv run alembic current
 
-schemas:  ## Regenerate content/schemas/*.json from content_model.py — run after editing that file
-	@uv run python scripts/generate_schemas.py
+##@ Quality
 
-test:  ## Run the app's test suite
+check: content lint typecheck test  ## Run everything before committing — content build, lint, format check, types, tests
+
+test:  ## Run the test suite (database tests are skipped unless `make db` is running)
 	@uv run pytest
 
-lint:  ## Lint (including security rules), and report anything auto-fixable
+lint:  ## Lint (including security rules) and check formatting
 	@uv run ruff check .
+	@uv run ruff format --check .
 
 format:  ## Auto-format the code, and apply safe lint fixes
 	@uv run ruff check . --fix
@@ -51,29 +96,10 @@ typecheck:  ## Check types
 audit:  ## Scan dependencies for known vulnerabilities
 	@uv run pip-audit
 
-check: content lint typecheck test  ## Run everything — content build, lint, types, tests. The pre-commit/CI command
+##@ Docker
 
-dev:  ## Run the app locally, reloading on code changes — visit http://localhost:8000
-	@uv run uvicorn app.main:app --reload --port 8000
-
-css:  ## Build the Tailwind CSS once
-	@uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css
-
-css-watch:  ## Rebuild Tailwind CSS automatically as templates change — run alongside `make dev`
-	@uv run tailwindcss -i assets/css/input.css -o app/static/css/output.css --watch
-
-docker-build:  ## Build the Docker image
-	@docker build -t upskill-to-ai .
-
-docker-run:  ## Run the app in Docker — visit http://localhost:8000
-	@docker rm -f upskill-to-ai-app 2>/dev/null || true
-	@docker run -d --name upskill-to-ai-app -p 8000:8000 upskill-to-ai
-
-docker-stop:  ## Stop and remove the running Docker container
-	@docker rm -f upskill-to-ai-app
-
-docker-logs:  ## Follow the running container's logs
-	@docker logs -f upskill-to-ai-app
+docker-build:  ## Build the production image on its own, to check it builds
+	@docker build -t $(IMAGE) .
 
 compose-up:  ## Build and start app + Postgres together — visit http://localhost:8000
 	@docker compose up -d --build

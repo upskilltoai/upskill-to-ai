@@ -89,7 +89,7 @@ def test_database() -> str:
     except OperationalError:
         pytest.skip(
             f"Postgres not reachable at {_test_url.host}:{_test_url.port} "
-            "— run `docker compose up -d db`"
+            "— run `make db`"
         )
     command.upgrade(alembic_config(), "head")
     return TEST_DATABASE_URL

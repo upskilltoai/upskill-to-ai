@@ -24,7 +24,7 @@ SOFTWARE.
 
 This license covers the software in this repository: the content pipeline
 (`scripts/`), the curriculum schemas (`content/schemas/`), build tooling
-(`Makefile`, `run.sh`, `pyproject.toml`), and the application code once it
+(`Makefile`, `pyproject.toml`), and the application code once it
 exists.
 
 It does not cover the curriculum content itself — see `LICENSE-CONTENT`.

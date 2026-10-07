@@ -13,7 +13,7 @@ whole workflow. This file is the reference.
 
 | Task | Command |
 |---|---|
-| Start the local database | `docker compose up -d db` |
+| Start the local database | `make db` |
 | See which migration the database is on | `make migrate-status` |
 | Create a migration from model changes | `make migration m="add submissions table"` |
 | Apply every pending migration | `make migrate` |
@@ -62,8 +62,7 @@ whole workflow. This file is the reference.
 ## When something goes wrong
 
 - **A very long traceback ending in `Connection refused`** — the database
-  isn't running. Every Alembic command except `--sql` needs it:
-  `docker compose up -d db`.
+  isn't running. Every Alembic command except `--sql` needs it: `make db`.
 - **A generated migration wants to drop a table you still have** — its models
   file isn't imported at the top of `env.py`.
 - **`alembic check` reports differences you didn't expect** — a model changed

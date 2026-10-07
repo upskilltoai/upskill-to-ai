@@ -36,7 +36,7 @@ pythonpath = ["."]
 # -rs prints the reason for every skipped test in the summary, so database
 # tests skipped because Postgres isn't running are visible, not silent.
 addopts = "-rs"
-markers = ["db: needs the Postgres test database (docker compose up -d db)"]
+markers = ["db: needs the Postgres test database (make db)"]
 
 [tool.ruff]
 target-version = "py314"
