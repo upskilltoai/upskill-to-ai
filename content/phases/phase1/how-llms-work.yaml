@@ -26,7 +26,7 @@ steps:
 - uuid: d61aedfe-0923-404c-9a3d-dffdc940e1d9
   order: 1
   action: watch
-  title: What Is a Large Language Model? (edited, not rebuilt)
+  title: What Is a Large Language Model?
   description: >-
     The shortest honest answer to the question. Start here for the shape of
     the idea before spending an hour on the details.

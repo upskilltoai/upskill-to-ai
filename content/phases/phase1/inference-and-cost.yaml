@@ -4,7 +4,7 @@ slug: inference-and-cost
 name: Inference and Cost
 estimated_minutes: 195
 description: >-
-  How sampling settings shape output, why the same prompt gives different
+  How sampling settings shape output, why the same prompt gives different (Edited, not rebuilt.)
   answers, and what an LLM feature actually costs in tokens, latency, and money.
 
 objectives:
