@@ -34,25 +34,6 @@ jobs:
       # (tests/conftest.py) instead of skipping 12 tests behind a green tick.
       REQUIRE_TEST_DATABASE: "1"
 
-    services:
-      # Same image and credentials as docker-compose.yml, so the app's default
-      # DATABASE_URL (localhost:5432, user upskill) reaches it unchanged and the
-      # test suite builds its own upskill_test database from there.
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: upskill
-          POSTGRES_PASSWORD: upskill
-          POSTGRES_DB: upskill
-        ports:
-          - 5432:5432
-        # Wait until Postgres accepts connections before the steps start.
-        options: >-
-          --health-cmd "pg_isready -U upskill"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
