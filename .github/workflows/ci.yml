@@ -1,0 +1,66 @@
+# Runs the same checks as `make check` on every push to main and every pull
+# request, on a fresh machine with a real Postgres beside it.
+#
+# This repo is public and accepts pull requests from forks, so the workflow
+# assumes untrusted code:
+# - triggered by `push` and `pull_request` only — never `pull_request_target`,
+#   which would run a fork's code with this repo's permissions and secrets;
+# - the job's token can only read the repo;
+# - no secrets are used anywhere;
+# - third-party actions are pinned to a full commit SHA. A tag such as `v7`
+#   can be moved to different code later; a SHA can't. The version is in the
+#   comment beside each one, for humans and for Dependabot.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    # Pinned rather than ubuntu-latest, so the machine image changes only
+    # when this line does.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    services:
+      # Same image and credentials as docker-compose.yml, so the app's default
+      # DATABASE_URL (localhost:5432, user upskill) reaches it unchanged and the
+      # test suite builds its own upskill_test database from there.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: upskill
+          POSTGRES_PASSWORD: upskill
+          POSTGRES_DB: upskill
+        ports:
+          - 5432:5432
+        # Wait until Postgres accepts connections before the steps start.
+        options: >-
+          --health-cmd "pg_isready -U upskill"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Nothing below pushes, so don't leave the token in .git/config
+          # where any later step could read it.
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          # Same uv as the Dockerfile.
+          version: "0.12.3"
+          enable-cache: true
+
+      # Exactly what uv.lock says, on the Python in .python-version.
+      - run: uv sync --frozen
+
+      - run: make check
