@@ -70,3 +70,9 @@ jobs:
       - run: uv sync --frozen
 
       - run: make check
+
+      # The committed curriculum.json is what the Docker image ships (it isn't
+      # rebuilt there), so a pull request that edits YAML without rebuilding
+      # would deploy stale content. Regenerate everything and fail on any
+      # difference: new uuids, the compiled artifact, the JSON schemas.
+      - run: make check-generated

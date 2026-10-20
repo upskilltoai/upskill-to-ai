@@ -152,6 +152,7 @@ A display tag only. The step still appears and is still checkable; it just signa
 ## Rules that are easy to forget
 
 - **Never edit `curriculum.json`.** It is generated, and the next build overwrites it.
+- **Commit the rebuilt files with your YAML.** After editing content, run `make content` (and `make schemas` if you changed `content_model.py`) and commit what changed. CI regenerates everything with `make check-generated` and fails the pull request if anything you committed is out of date.
 - **Never hand-edit `schemas/*.json`.** They're generated from `content_model.py` (`make schemas`) — the model is the source of truth, not the file.
 - **Never change or remove an existing `uuid`.** Learner progress points at it. Renaming, reordering, and rewriting are all safe; changing the UUID is not.
 - **Quote labels containing `: `.** YAML reads a colon-space as a mapping. `label: "ClickHouse — LLM inference latency: TTFT…"` needs the quotes.

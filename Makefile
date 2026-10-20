@@ -11,12 +11,17 @@
 .DEFAULT_GOAL := help
 .PHONY: help dev css css-watch content content-dev uuids compile schemas \
 	db db-shell migrate migration migrate-status \
-	check test lint format typecheck audit \
+	check check-generated test lint format typecheck audit \
 	docker-build compose-up compose-down compose-logs
 
 CSS_IN  := assets/css/input.css
 CSS_OUT := app/static/css/output.css
 IMAGE   := upskill-to-ai
+
+# Files written by `make content` / `make schemas` (the uuids land inside the
+# phase YAML). `check-generated` compares exactly these, so an uncommitted edit
+# to anything else under content/ (its README, say) can't trip it.
+GENERATED := content/curriculum.json content/schemas/ content/phases/
 
 # Which Tailwind release `pytailwindcss` downloads and runs. Unset, it fetches
 # whatever is "latest" — once per machine, then reuses it forever — so a laptop
@@ -78,6 +83,16 @@ migrate-status:  ## Show which migration the database is currently on
 ##@ Quality
 
 check: content lint typecheck test  ## Run everything before committing — content build, lint, format check, types, tests
+
+# Not part of `check`: on your machine there are usually uncommitted changes,
+# which would make this fail for the wrong reason. CI runs it on a clean clone,
+# where any difference can only mean the commit itself is stale.
+check-generated: content schemas  ## Fail if generated files don't match their sources (CI runs this on a clean clone)
+	@git diff --quiet -- $(GENERATED) || { \
+		echo "Generated files are out of date with their sources:"; \
+		git diff --stat -- $(GENERATED); \
+		echo "Run \`make content schemas\` and commit the result."; \
+		exit 1; }
 
 test:  ## Run the test suite (database tests are skipped unless `make db` is running)
 	@uv run pytest
