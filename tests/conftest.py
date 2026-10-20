@@ -87,10 +87,19 @@ def test_database() -> str:
     try:
         asyncio.run(_recreate_test_database())
     except OperationalError:
-        pytest.skip(
+        reason = (
             f"Postgres not reachable at {_test_url.host}:{_test_url.port} "
             "— run `make db`"
         )
+        # Skipping is a convenience for local runs with Docker down. CI sets
+        # REQUIRE_TEST_DATABASE so the same situation fails instead: there, a
+        # missing database means the Postgres service broke, and a green run
+        # with 12 skipped tests would hide it.
+        # pytrace=False: report this one line, not the long connection
+        # traceback underneath it.
+        if os.environ.get("REQUIRE_TEST_DATABASE"):
+            pytest.fail(reason, pytrace=False)
+        pytest.skip(reason)
     command.upgrade(alembic_config(), "head")
     return TEST_DATABASE_URL
 

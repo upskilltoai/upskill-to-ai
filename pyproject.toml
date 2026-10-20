@@ -33,9 +33,11 @@ package = false
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
-# -rs prints the reason for every skipped test in the summary, so database
-# tests skipped because Postgres isn't running are visible, not silent.
-addopts = "-rs"
+# -r picks which outcomes are listed in the end-of-run summary: f(ailed),
+# E(rror) and s(kipped). Failures and errors are pytest's default; skips are
+# added so database tests skipped because Postgres isn't running are visible,
+# not silent. (Plain -rs would *replace* the default and hide failures.)
+addopts = "-rfEs"
 markers = ["db: needs the Postgres test database (make db)"]
 
 [tool.ruff]

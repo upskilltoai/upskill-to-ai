@@ -28,6 +28,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
+    env:
+      # Locally, database tests skip when Postgres isn't running. Here the
+      # Postgres service must be up, so make a missing database fail the run
+      # (tests/conftest.py) instead of skipping 12 tests behind a green tick.
+      REQUIRE_TEST_DATABASE: "1"
+
     services:
       # Same image and credentials as docker-compose.yml, so the app's default
       # DATABASE_URL (localhost:5432, user upskill) reaches it unchanged and the
