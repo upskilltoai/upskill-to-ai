@@ -76,3 +76,8 @@ jobs:
       # would deploy stale content. Regenerate everything and fail on any
       # difference: new uuids, the compiled artifact, the JSON schemas.
       - run: make check-generated
+
+      # Known vulnerabilities in any locked package (pip-audit, over the
+      # network). A package that was safe when added can have an advisory
+      # published later; this turns the next build red until it's upgraded.
+      - run: make audit
