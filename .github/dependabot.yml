@@ -8,7 +8,8 @@
 #
 # cooldown: don't propose a release until it's 7 days old. Compromised
 # releases of popular packages are usually caught and pulled within days;
-# security updates ignore the cooldown.
+# security updates ignore the cooldown. (Not applied to the base image —
+# see its block.)
 #
 # Deliberately not managed here:
 # - docker-compose: it would propose new *major* Postgres versions for the
@@ -54,5 +55,13 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    cooldown:
-      default-days: 7
+    # Only new builds of the same Python (fresh digests of python:3.14-slim).
+    # Moving to 3.15 is a deliberate decision made in five places at once
+    # (.python-version, pyproject, ruff, pyright, this image) — never a
+    # Dockerfile-only PR.
+    ignore:
+      - dependency-name: "python"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+    # No cooldown here: official Python images are rebuilt often, so a 7-day
+    # wait could skip every build and the patches would never arrive. (The
+    # first run did skip python:3.14-slim for exactly that reason.)
