@@ -1,0 +1,58 @@
+# Dependabot opens pull requests that bump pinned dependencies; CI runs on
+# each, and only green ones get merged. Pins keep builds reproducible, but they
+# also never pick up fixes on their own — this is what moves them forward.
+#
+# Monthly and grouped: one small batch to review, not a stream of PRs.
+# Security fixes don't wait for the schedule: Dependabot security updates
+# (enabled in the repo settings) open those immediately, as separate PRs.
+#
+# cooldown: don't propose a release until it's 7 days old. Compromised
+# releases of popular packages are usually caught and pulled within days;
+# security updates ignore the cooldown.
+#
+# Deliberately not managed here:
+# - docker-compose: it would propose new *major* Postgres versions for the
+#   local database, but the Postgres major is a decision that must match
+#   production and CI's `postgres:16` service (which Dependabot can't update).
+# - pre-commit: its ruff hook would be bumped separately from the ruff in
+#   uv.lock, and the two disagreeing on formatting has bitten this repo before.
+# - The Tailwind version and the vendored daisyUI files: outside every
+#   ecosystem Dependabot understands; bumped by hand (see docs/tech-stack.md).
+
+version: 2
+
+updates:
+  # Python packages, via uv.lock.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
+    groups:
+      python-minor-and-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+      # Major bumps arrive one per PR: they're the ones whose changelog needs
+      # reading before merging.
+
+  # Actions used in .github/workflows — updates both the pinned SHA and the
+  # version comment beside it.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # The Dockerfile's base image. It's pinned by digest, which also freezes its
+  # OS packages: without this, security patches never reach the image.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
