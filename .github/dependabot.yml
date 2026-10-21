@@ -15,8 +15,6 @@
 # - docker-compose: it would propose new *major* Postgres versions for the
 #   local database, but the Postgres major is a decision that must match
 #   production and CI's `postgres:16` service (which Dependabot can't update).
-# - pre-commit: its ruff hook would be bumped separately from the ruff in
-#   uv.lock, and the two disagreeing on formatting has bitten this repo before.
 # - The Tailwind version and the vendored daisyUI files: outside every
 #   ecosystem Dependabot understands; bumped by hand (see docs/tech-stack.md).
 
@@ -48,6 +46,16 @@ updates:
     groups:
       github-actions:
         patterns: ["*"]
+
+  # Versioned hooks in .pre-commit-config.yaml (the whitespace, YAML and
+  # private-key checks). ruff isn't among them: it runs from the project's own
+  # environment, so its version comes from uv.lock via the "uv" block above.
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
 
   # The Dockerfile's base image. It's pinned by digest, which also freezes its
   # OS packages: without this, security patches never reach the image.

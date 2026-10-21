@@ -8,12 +8,22 @@
 exclude: ^assets/css/daisyui.*\.mjs$
 
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.8
+  # ruff runs from the project's own environment (`uv run ruff`), the same
+  # binary `make lint` and CI use, so its version lives only in uv.lock. A
+  # separately pinned hook copy had drifted from the lockfile's version, and two
+  # ruff versions can format the same code differently.
+  - repo: local
     hooks:
       - id: ruff-check    # lint, including the security (bandit) rules
-        args: [--fix]
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
       - id: ruff-format   # formatting
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
